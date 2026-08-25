@@ -157,7 +157,10 @@ transitions, et la rotation du hero est également désactivée côté JavaScrip
 
 Le handoff ne spécifie que le rendu large. Les décisions prises en dessous :
 
-- Grilles produit : 4 colonnes ≥ 760 px, 2 ≥ 460 px, 1 en dessous.
+- Grilles produit : 4 colonnes ≥ 760 px, 2 en dessous — jamais une seule. Sur
+  téléphone la gouttière tombe à 6 px et le nom de la pièce est tronqué sur une
+  ligne, pour que les lignes de la grille restent alignées et que la planche se
+  lise d'un bloc.
 - Bandeau plan de vol : cinq colonnes ≥ 760 px, deux en dessous, la dernière
   cellule couvrant la largeur restante. Le handoff prévoyait une grille
   `auto-fit`, qui laissait une cellule vide en fin de grille — invisible sur le

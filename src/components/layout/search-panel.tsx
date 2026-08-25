@@ -73,7 +73,7 @@ export function SearchPanel({
           </p>
 
           {results.length > 0 && (
-            <ul className="m-0 mt-[18px] grid list-none grid-cols-2 gap-[14px] p-0 min-[760px]:grid-cols-4">
+            <ul className="m-0 mt-[18px] grid list-none grid-cols-2 gap-[6px] p-0 min-[760px]:grid-cols-4 min-[760px]:gap-[14px]">
               {results.slice(0, 8).map((product) => (
                 <li key={product.slug}>
                   <Link
@@ -90,10 +90,10 @@ export function SearchPanel({
                       />
                     </span>
                     <span className="mt-[10px] flex items-baseline justify-between gap-[10px] text-[13px]">
-                      <span className="transition-opacity duration-300 group-hover:opacity-60">
+                      <span className="min-w-0 truncate transition-opacity duration-300 group-hover:opacity-60">
                         {product.name}
                       </span>
-                      <span className="whitespace-nowrap">
+                      <span className="shrink-0 whitespace-nowrap">
                         {formatPrice(product.price)}
                       </span>
                     </span>
