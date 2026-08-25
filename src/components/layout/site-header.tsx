@@ -135,9 +135,11 @@ export function SiteHeader() {
               Lookbook
             </Link>
 
+            {/* La pastille n'ouvre aucun volet : la survoler referme celui qui
+                serait resté ouvert en venant d'un lien voisin. */}
             <Link
               href={DROP_BADGE.href}
-              onPointerEnter={hover("shop")}
+              onPointerEnter={hover(null)}
               className="hidden rounded-badge bg-burgundy px-[8px] py-[3px] text-paper transition-colors duration-300 hover:bg-ink min-[720px]:inline-block"
             >
               {DROP_BADGE.label}

@@ -70,7 +70,9 @@ L'en-tête ouvre trois panneaux, tous rendus dans la même bande blanche
 (`NavFlyout`) sous la barre :
 
 - **Shop all** au survol — les trois rayons avec leur nombre de pièces, un
-  visuel du drop, et « Découvrir plus » vers la collection.
+  visuel du drop, et « Découvrir plus » vers la collection. La pastille
+  « Drop 01 » voisine n'ouvre volontairement rien : la survoler referme un
+  volet resté ouvert, et un clic mène à la collection.
 - **Lookbook** au survol — quatre visuels du drop et « Découvrir plus ».
 - **Search** au clic — recherche dans le catalogue, filtrée côté client sur le
   nom, le coloris, la description et le rayon.
