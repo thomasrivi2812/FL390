@@ -1,26 +1,173 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ---------------------------------------------------------------------------
+   Design tokens — cf. handoff « Design Tokens »
+   Trois familles, sept couleurs, trois recettes de glass. Ne pas en inventer.
+--------------------------------------------------------------------------- */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@theme {
+  --color-ink: #000000;
+  --color-paper: #fdfdfd;
+  --color-stone: #efefec;
+  --color-burgundy: #6d1111;
+  --color-navy: #092242;
+  --color-navy-garment: #1b2a4a;
+  --color-olive: #27351b;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-krona-one);
+  --font-body: var(--font-work-sans);
+  --font-label: var(--font-titillium);
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), system-ui, sans-serif;
+:root {
+  /* Hauteur totale de l'en-tête fixe : ticker 36px + navigation 60px.
+     Les décalages sticky et le spacer des pages internes en dépendent. */
+  --header-height: 96px;
+}
+
+@layer base {
+  html {
+    background: var(--color-ink);
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body), sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-burgundy);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: var(--color-burgundy);
+    color: var(--color-paper);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Glass — trois tiers seulement
+--------------------------------------------------------------------------- */
+
+@layer components {
+  /* Tier 1 — en-tête */
+  .glass-ticker {
+    background: rgb(253 253 253 / 0.42);
+    backdrop-filter: blur(26px) saturate(180%);
+    -webkit-backdrop-filter: blur(26px) saturate(180%);
+  }
+
+  .glass-nav {
+    background: rgb(253 253 253 / 0.5);
+    backdrop-filter: blur(30px) saturate(180%);
+    -webkit-backdrop-filter: blur(30px) saturate(180%);
+  }
+
+  .glass-bar {
+    background: rgb(253 253 253 / 0.6);
+    backdrop-filter: blur(22px) saturate(180%);
+    -webkit-backdrop-filter: blur(22px) saturate(180%);
+  }
+
+  /* Tier 2 — pastille posée sur une image */
+  .glass-pill {
+    background: rgb(253 253 253 / 0.14);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+    border: 1px solid rgb(253 253 253 / 0.28);
+  }
+
+  .glass-pill-cta {
+    background: rgb(253 253 253 / 0.1);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+    border: 1px solid rgb(253 253 253 / 0.3);
+    box-shadow: inset 0 1px 0 rgb(253 253 253 / 0.28);
+  }
+
+  /* Tier 3 — contrôle posé sur une carte produit */
+  .glass-control {
+    background: rgb(253 253 253 / 0.94);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  /* Repli opaque là où backdrop-filter n'est pas supporté */
+  @supports not (
+    (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
+  ) {
+    .glass-ticker,
+    .glass-nav,
+    .glass-bar,
+    .glass-control {
+      background: rgb(253 253 253 / 0.96);
+    }
+
+    .glass-pill,
+    .glass-pill-cta {
+      background: rgb(0 0 0 / 0.55);
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Motion
+--------------------------------------------------------------------------- */
+
+@keyframes fl-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes fl-rise {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fl-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fl-rise {
+  animation: fl-rise 1100ms ease-out both;
+}
+
+.animate-fl-fade {
+  animation: fl-fade 900ms ease-out both;
+}
+
+/* Panneaux et modales : le vocabulaire des boutons (300 ms), pas celui des
+   entrées de page — 900 ms serait perçu comme une latence. */
+.animate-fl-fade-fast {
+  animation: fl-fade 300ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }
