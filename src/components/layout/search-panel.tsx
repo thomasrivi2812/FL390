@@ -6,7 +6,7 @@ import { useId, useMemo, useState } from "react";
 import { NavFlyout } from "@/components/layout/nav-flyout";
 import { ProductVisual } from "@/components/product/product-visual";
 import { formatPrice } from "@/lib/format";
-import { allProducts, findCategory } from "@/lib/products";
+import { allProducts, findCategory, primaryImage } from "@/lib/products";
 
 /**
  * Recherche dans le catalogue.
@@ -83,7 +83,7 @@ export function SearchPanel({
                   >
                     <span className="relative block aspect-3/4 overflow-hidden rounded-card bg-stone">
                       <ProductVisual
-                        src={product.image}
+                        src={primaryImage(product)?.src ?? null}
                         alt={product.name}
                         sizes="(min-width: 760px) 22vw, 45vw"
                         className="absolute inset-0"

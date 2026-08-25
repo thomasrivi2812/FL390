@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { NavFlyout } from "@/components/layout/nav-flyout";
-import { LOOKBOOK } from "@/lib/lookbook";
+import { LOOKBOOK_PORTRAIT } from "@/lib/lookbook";
 
 /** Volet « Lookbook » : quatre visuels du drop, en accès direct. */
 export function LookbookFlyout({ onNavigate }: { onNavigate: () => void }) {
@@ -13,7 +13,7 @@ export function LookbookFlyout({ onNavigate }: { onNavigate: () => void }) {
       </p>
 
       <ul className="m-0 grid list-none grid-cols-2 gap-[14px] p-0 min-[760px]:grid-cols-4">
-        {LOOKBOOK.slice(0, 4).map((figure) => (
+        {LOOKBOOK_PORTRAIT.slice(0, 4).map((figure) => (
           <li key={figure.src}>
             <Link
               href="/lookbook"

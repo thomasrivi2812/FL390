@@ -26,14 +26,16 @@ export default function LookbookPage() {
         {LOOKBOOK.map((figure, index) => (
           <figure
             key={figure.src}
-            className="group relative m-0 aspect-3/4 overflow-hidden rounded-card bg-stone"
+            className={`group relative m-0 overflow-hidden rounded-card bg-stone ${
+              figure.wide ? "col-span-full aspect-16/9" : "aspect-3/4"
+            }`}
           >
             <Image
               src={figure.src}
               alt={figure.caption}
               fill
               priority={index < 2}
-              sizes="(min-width: 1060px) 33vw, (min-width: 720px) 50vw, 100vw"
+              sizes={figure.wide ? "100vw" : "(min-width: 1060px) 33vw, (min-width: 720px) 50vw, 100vw"}
               className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-104"
             />
             <CaptionPill className="bottom-[14px] left-[14px]">

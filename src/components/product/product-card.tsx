@@ -5,7 +5,12 @@ import Link from "next/link";
 import { useCart } from "@/components/cart/cart-provider";
 import { formatPrice } from "@/lib/format";
 import { ProductVisual } from "@/components/product/product-visual";
-import { defaultSize, type Product } from "@/lib/products";
+import {
+  defaultSize,
+  hoverImage,
+  primaryImage,
+  type Product,
+} from "@/lib/products";
 
 const CARD_SIZES =
   "(min-width: 760px) 25vw, (min-width: 460px) 50vw, 100vw";
@@ -19,21 +24,23 @@ export function ProductCard({
 }) {
   const { add } = useCart();
   const href = `/shop/${product.slug}` as const;
+  const front = primaryImage(product);
+  const back = hoverImage(product);
 
   return (
     <article className="group flex flex-col">
       <div className="relative aspect-3/4 overflow-hidden rounded-card bg-stone">
         <Link href={href} aria-label={product.name} className="absolute inset-0">
           <ProductVisual
-            src={product.secondImage}
-            alt={`${product.name} — impression dos`}
+            src={back?.src ?? null}
+            alt={`${product.name} — ${back?.caption ?? "visuel"}`}
             priority={priority}
             sizes={CARD_SIZES}
             className="absolute inset-0"
           />
           <ProductVisual
-            src={product.image}
-            alt={`${product.name} — porté`}
+            src={front?.src ?? null}
+            alt={`${product.name} — ${front?.caption ?? "visuel"}`}
             priority={priority}
             sizes={CARD_SIZES}
             className="absolute inset-0 transition-opacity duration-500 ease-out group-hover:opacity-0"

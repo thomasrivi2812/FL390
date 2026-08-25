@@ -19,8 +19,8 @@ export function LookbookTeaser() {
           partir de deux colonnes. */}
       <div className="relative flex min-h-[520px] flex-col justify-end overflow-hidden rounded-card bg-stone min-[760px]:aspect-4/5 min-[760px]:min-h-0">
         <Image
-          src="/img/cleared.png"
-          alt="T-shirt Cleared For Takeoff, impression au dos"
+          src="/img/hoodie-discipline-worn.png"
+          alt="Sweat à capuche Discipline porté sur le tarmac"
           fill
           sizes="(min-width: 760px) 50vw, 100vw"
           className="object-cover"
@@ -55,15 +55,15 @@ export function LookbookTeaser() {
 
       <div className="relative aspect-4/5 overflow-hidden rounded-card bg-stone">
         <Image
-          src="/img/departures.png"
-          alt="T-shirt Departures, dix-huit codes OACI imprimés au dos"
+          src="/img/cleared-navy-worn.png"
+          alt="T-shirt Cleared For Takeoff bleu marine, impression au dos"
           fill
           sizes="(min-width: 760px) 50vw, 100vw"
           style={{ objectPosition: "50% 34%" }}
           className="object-cover"
         />
         <CaptionPill className="bottom-[16px] left-[16px]">
-          Departures
+          Cleared, navy
         </CaptionPill>
       </div>
     </section>

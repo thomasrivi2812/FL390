@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useCart } from "@/components/cart/cart-provider";
 import { formatPrice } from "@/lib/format";
 import { ProductVisual } from "@/components/product/product-visual";
-import { findProduct, ONE_SIZE } from "@/lib/products";
+import { findProduct, ONE_SIZE, primaryImage } from "@/lib/products";
 
 const LABEL =
   "font-label font-bold text-[9px] tracking-[0.28em] uppercase";
@@ -154,7 +154,7 @@ export function CartDrawer() {
                     className="relative aspect-3/4 w-[84px] shrink-0 overflow-hidden rounded-card bg-stone"
                   >
                     <ProductVisual
-                      src={product.image}
+                      src={primaryImage(product)?.src ?? null}
                       alt={product.name}
                       sizes="84px"
                       className="absolute inset-0"

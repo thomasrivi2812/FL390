@@ -57,12 +57,25 @@ L'application est disponible sur http://localhost:3000.
 
 ## Catalogue et rayons
 
-Trois rayons — T-shirts, Sweats, Accessoires — déclarés dans
-`src/lib/products.ts`, où chaque produit porte sa catégorie, ses specs et ses
-tailles. Une liste de tailles vide vaut taille unique : la fiche produit masque
-alors le sélecteur, le panier enregistre `TU`, et le rayon n'affiche pas de
-filtre par taille. Un produit sans photographie (`image: null`) rend un cadre
-« Visuel à venir » plutôt qu'une image cassée.
+Neuf pièces réparties en trois rayons — T-shirts, Sweats, Accessoires —
+déclarées dans `src/lib/products.ts`, où chaque produit porte sa catégorie, ses
+caractéristiques, ses tailles et sa galerie. Une liste de tailles vide vaut
+taille unique : la fiche produit masque alors le sélecteur, le panier enregistre
+`TU`, et le rayon n'affiche pas de filtre par taille.
+
+Chaque produit expose une galerie ordonnée de `{ src, caption }` : la première
+image porte la carte, la seconde est révélée à son survol, toutes sont montrées
+sur la fiche. Une galerie vide rend un cadre « Visuel à venir » plutôt qu'une
+image cassée.
+
+### Nommage des visuels
+
+`public/img/` suit trois préfixes : `hero-*` pour les trois plans du carrousel
+d'accueil (16:9), `editorial-*` pour les bannières du lookbook (16:9), et
+`<pièce>-worn|back|front.png` pour les prises de vue produit (3:4, le ratio des
+cartes). Les noms sont en minuscules sans espace ni accent — un fichier nommé
+avec un accent en forme décomposée ou une esperluette se résout mal une fois
+servi par un CDN.
 
 ## Navigation
 
@@ -206,9 +219,9 @@ depuis le corps de la requête — et renvoyer `{ "url": "…" }`.
 | 2 | Newsletter | `NEWSLETTER_WEBHOOK_URL` à renseigner, sinon 503 |
 | 3 | Adresse de contact | `contact@fl390.paris` est un placeholder du handoff (`src/lib/site.ts`) |
 | 4 | Guide des tailles | Mesures plausibles à confirmer sur les pièces réelles (`src/lib/size-guide.ts`) |
-| 5 | Seconde prise de vue | Seul `climb-tee` en a une ; le survol des autres cartes est sans effet |
-| 5b | Photographie du tote | `remove-before-flight-tote` n'a pas de visuel — le cadre « Visuel à venir » s'affiche à sa place. Son prix (45 €) est également indicatif |
-| 5c | Rayon Sweats | Déclaré et navigable, mais sans produit : l'état vide s'affiche. À alimenter au Drop 02 |
+| 5 | Seconde prise de vue | Manque encore à `departures-tee`, au sweat et au tote : le survol de leur carte est sans effet |
+| 5b | Prix à confirmer | Le sweat (120 €) et le tote (45 €) portent un prix indicatif, signalé dans `products.ts` |
+| 5c | Visuels basse définition | `cleared.png` (446 px), `climb-bw.png` (450 px) et `climb.png` sont en deçà de ce qu'une carte de 339 px demande en écran haute densité |
 | 6 | Visuel Open Graph | Une photo produit fait office de repli — prévoir un 1200 × 630 dédié |
 | 7 | Favicon | `src/app/icon.svg` est un placeholder typographique |
 | 8 | Catalogue | Codé en dur dans `src/lib/products.ts` ; `getProducts`/`getProduct` sont asynchrones pour absorber un backend sans toucher aux pages |

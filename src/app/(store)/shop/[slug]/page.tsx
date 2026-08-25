@@ -9,7 +9,7 @@ import { formatPrice } from "@/lib/format";
 import {
   getProduct,
   getProducts,
-  hasSecondView,
+  primaryImage,
   productMeta,
 } from "@/lib/products";
 
@@ -31,7 +31,9 @@ export async function generateMetadata(
     openGraph: {
       title: product.name,
       description: product.description,
-      images: product.image ? [{ url: product.image }] : undefined,
+      images: primaryImage(product)
+        ? [{ url: primaryImage(product)!.src }]
+        : undefined,
     },
   };
 }
@@ -46,32 +48,23 @@ export default async function ProductPage(props: PageProps<"/shop/[slug]">) {
   return (
     <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,380px),1fr))] items-start">
       <div className="flex flex-col gap-[14px] px-[22px] py-[18px] min-[760px]:pr-0">
-        <figure className="relative m-0 aspect-3/4 overflow-hidden rounded-frame bg-stone">
-          <ProductVisual
-            src={product.image}
-            alt={`${product.name} — impression dos`}
-            priority
-            sizes="(min-width: 760px) 50vw, 100vw"
-            className="absolute inset-0"
-          />
-          <CaptionPill className="bottom-[14px] left-[14px]">
-            Dos — impression
-          </CaptionPill>
-        </figure>
-
-        {hasSecondView(product) && (
-          <figure className="relative m-0 aspect-3/4 overflow-hidden rounded-frame bg-stone">
+        {product.images.map((image, index) => (
+          <figure
+            key={image.src}
+            className="relative m-0 aspect-3/4 overflow-hidden rounded-frame bg-stone"
+          >
             <ProductVisual
-              src={product.secondImage}
-              alt={`${product.name} — porté sur le tarmac`}
+              src={image.src}
+              alt={`${product.name} — ${image.caption}`}
+              priority={index === 0}
               sizes="(min-width: 760px) 50vw, 100vw"
               className="absolute inset-0"
             />
             <CaptionPill className="bottom-[14px] left-[14px]">
-              Porté — tarmac
+              {image.caption}
             </CaptionPill>
           </figure>
-        )}
+        ))}
       </div>
 
       <div className="border-t border-black/10 px-[clamp(22px,4vw,60px)] py-[clamp(28px,4vw,64px)] min-[760px]:sticky min-[760px]:top-(--header-height) min-[760px]:border-t-0 min-[760px]:border-l">

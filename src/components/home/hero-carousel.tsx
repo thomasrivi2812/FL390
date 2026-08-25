@@ -8,24 +8,24 @@ const SLIDE_DURATION_MS = 5000;
 /** Les visuels sont pilotés par index ; les titres restent des nœuds de texte. */
 const SLIDES = [
   {
-    src: "/img/climb.png",
-    alt: "T-shirt Climb And Maintain porté sur le tarmac",
-    position: "44% 30%",
+    src: "/img/hero-discipline.png",
+    alt: "T-shirt Discipline porté sur le tarmac, devant un jet",
+    position: "46% 42%",
   },
   {
-    src: "/img/cleared-navy.png",
-    alt: "T-shirt Cleared For Takeoff navy, impression au dos",
-    position: "50% 34%",
+    src: "/img/hero-cleared-navy.png",
+    alt: "T-shirt Cleared For Takeoff bleu marine, contre un mur de béton",
+    position: "76% 42%",
   },
   {
-    src: "/img/cdg-lhr.png",
-    alt: "T-shirt CDG — LHR, codes OACI au dos",
-    position: "50% 36%",
+    src: "/img/hero-cdg-lhr.png",
+    alt: "T-shirt CDG — LHR bleu marine, face et dos",
+    position: "72% 42%",
   },
 ] as const;
 
 const HEADLINE =
-  "font-display m-0 text-[clamp(2.6rem,11vw,10rem)] leading-[0.84] tracking-[-0.02em] text-paper transition-opacity duration-700 ease-out";
+  "font-display col-start-1 row-start-1 m-0 self-end text-[clamp(2.6rem,11vw,10rem)] leading-[0.84] tracking-[-0.02em] text-paper transition-opacity duration-700 ease-out";
 
 export function HeroCarousel() {
   const [index, setIndex] = useState(0);
@@ -68,18 +68,16 @@ export function HeroCarousel() {
       <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.7)_0%,rgba(0,0,0,0.05)_52%,rgba(0,0,0,0.3)_100%)]" />
 
       <div className="absolute inset-x-0 bottom-0 flex flex-col gap-[22px] px-[22px] pb-[26px]">
-        <div className="animate-fl-rise relative">
+        <div className="animate-fl-rise grid">
           <h1
             aria-hidden={index !== 0}
             className={`${HEADLINE} ${index === 0 ? "opacity-100" : "opacity-0"}`}
           >
-            Climb And
-            <br />
-            Maintain
+            Discipline
           </h1>
           <h1
             aria-hidden={index !== 1}
-            className={`${HEADLINE} absolute inset-0 ${index === 1 ? "opacity-100" : "opacity-0"}`}
+            className={`${HEADLINE} ${index === 1 ? "opacity-100" : "opacity-0"}`}
           >
             Cleared For
             <br />
@@ -87,7 +85,7 @@ export function HeroCarousel() {
           </h1>
           <h1
             aria-hidden={index !== 2}
-            className={`${HEADLINE} absolute inset-0 ${index === 2 ? "opacity-100" : "opacity-0"}`}
+            className={`${HEADLINE} ${index === 2 ? "opacity-100" : "opacity-0"}`}
           >
             CDG —
             <br />
