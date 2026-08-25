@@ -5,6 +5,14 @@ fondée par un pilote de ligne. Implémentation du handoff de design
 ([`docs/design-handoff.md`](docs/design-handoff.md)) en Next.js, déployable sur
 [Vercel](https://vercel.com) sans configuration de build.
 
+> **Sur l'en-tête.** Le document de spec et le prototype `FL390 v2.dc.html`
+> divergent : deux barres de 96 px avec bandeau défilant d'un côté, barre unique
+> de 62 px avec pastille « Drop 01 » de l'autre. C'est le prototype qui fait foi,
+> sur décision de la marque. Le bandeau d'annonces (« Livraison offerte dès
+> 120 € », etc.) n'existe donc pas dans cette implémentation. Le document de spec
+> se trompe aussi en qualifiant l'état `scrolled` d'« inutilisé » : il pilote la
+> bascule de l'en-tête.
+
 ## Stack
 
 | | |
@@ -86,14 +94,23 @@ document de référence.
 **Polices** — `font-display` (Krona One, display uniquement), `font-body`
 (Work Sans, copy), `font-label` (Titillium Web, micro-labels en capitales).
 
-**Glass** — trois recettes, pas une de plus : `.glass-ticker` / `.glass-nav` /
-`.glass-bar` (en-tête et barres), `.glass-pill` / `.glass-pill-cta` (posé sur
-une image), `.glass-control` (contrôle de carte). Chacune est doublée d'un repli
-opaque via `@supports not (backdrop-filter)`.
+**Glass** — trois recettes, pas une de plus : `.glass-nav` / `.glass-bar`
+(en-tête et barres), `.glass-pill` / `.glass-pill-cta` (posé sur une image),
+`.glass-control` (contrôle de carte). Chacune est doublée d'un repli opaque via
+`@supports not (backdrop-filter)`.
 
-**Hauteur d'en-tête** — 96 px (ticker 36 + navigation 60), exposée en
-`--header-height`. Le spacer des pages internes et les décalages sticky
-(barre de filtres, colonne produit) en dépendent : ne pas la modifier isolément.
+⚠️ Ne jamais écrire `-webkit-backdrop-filter` à la main dans `globals.css` :
+Lightning CSS traite l'alias et la propriété standard comme équivalents et ne
+conserve que la dernière déclarée. Le préfixe est ajouté automatiquement d'après
+browserslist.
+
+**En-tête** — 62 px, exposés en `--header-height` ; le spacer des pages internes
+et les décalages sticky (barre de filtres, colonne produit) en dépendent : ne pas
+la modifier isolément. Deux états, avec 400 ms de transition : transparent en
+blanc sur l'accueil tant que la page n'a pas défilé, glass avec texte noir
+partout ailleurs et dès 60 px de défilement. L'état est lu via
+`useSyncExternalStore`, pour qu'une page rouverte à une position déjà défilée
+rende le bon état dès l'hydratation.
 
 **Mouvement** — `prefers-reduced-motion: reduce` coupe globalement animations et
 transitions, et la rotation du hero est également désactivée côté JavaScript.
@@ -105,9 +122,12 @@ Le handoff ne spécifie que le rendu large. Les décisions prises en dessous :
 - Grilles produit : 4 colonnes ≥ 760 px, 2 ≥ 460 px, 1 en dessous.
 - Fiche produit : colonne d'info sticky ≥ 760 px, empilée en dessous (le filet
   passe de `border-left` à `border-top`).
-- En-tête : sous 560 px, les gouttières passent de 20 à 14 px et le lien
-  « Contact » sort de la navigation (il reste dans le pied de page) ; sous
-  900 px, le libellé « FR / EUR » est masqué. Vérifié sans repli de ligne ni
+- En-tête : la barre dessinée n'entre pas sous 720 px. Les liens « Shop all »,
+  « Lookbook » et la pastille « Drop 01 » se replient donc dans le menu en
+  dessous, « Contact » sous 560 px et « FR / EUR » sous 900 px. Le bouton menu
+  de l'en-tête ouvre un panneau portant la navigation complète — il est présent
+  à toutes les largeurs, comme dans le prototype, mais il y ouvre un vrai menu
+  au lieu de pointer vers la collection. Vérifié sans repli de ligne ni
   débordement horizontal de 320 à 1440 px.
 - Bouton « + » des cartes : cible tactile de 44 px autour du carré visuel de
   32 px, conformément à la remarque du handoff.

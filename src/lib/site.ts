@@ -53,16 +53,21 @@ export const siteUrl =
   normalizeSiteUrl(process.env.VERCEL_URL) ??
   "http://localhost:3000";
 
-export const ANNOUNCEMENTS = [
-  "Livraison offerte dès 120 €",
-  "Fabriqué en France",
-  "Collection 01 — séries courtes",
-  "See you at FL390",
-] as const;
-
+/** Liens de gauche dans l'en-tête. « Contact » est cadré à droite. */
 export const NAV_LINKS = [
   { href: "/shop", label: "Shop all" },
   { href: "/lookbook", label: "Lookbook" },
+] as const;
+
+/** Pastille bordeaux de l'en-tête, qui pointe vers la collection. */
+export const DROP_BADGE = { href: "/shop", label: "Drop 01" } as const;
+
+/** Menu déployé par le bouton de l'en-tête. */
+export const MENU_LINKS = [
+  { href: "/shop", label: "Shop all" },
+  { href: "/lookbook", label: "Lookbook" },
+  { href: "/livraison", label: "Livraison" },
+  { href: "/retours", label: "Retours" },
   { href: "/contact", label: "Contact" },
 ] as const;
 
