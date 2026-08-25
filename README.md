@@ -142,6 +142,9 @@ depuis le corps de la requête — et renvoyer `{ "url": "…" }`.
 ## Déploiement Vercel
 
 1. Importer le dépôt — le framework Next.js est détecté automatiquement.
-2. Renseigner `NEXT_PUBLIC_SITE_URL` (et `NEWSLETTER_WEBHOOK_URL` le cas échéant).
+2. `NEXT_PUBLIC_SITE_URL` est facultative : à défaut, le domaine de production
+   du projet Vercel est utilisé, puis l'URL du déploiement courant pour les
+   previews. Ne la déclarer que pour forcer un domaine précis — et avec une
+   valeur non vide. Ajouter `NEWSLETTER_WEBHOOK_URL` le cas échéant.
 3. Chaque push sur la branche par défaut déclenche un déploiement de production,
    chaque autre branche un déploiement de preview.

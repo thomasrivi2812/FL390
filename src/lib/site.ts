@@ -19,9 +19,38 @@ export const SITE = {
   legal: "© 2026 FL390 Paris — Fabriqué en France",
 } as const;
 
-/** URL publique, utilisée pour les métadonnées absolues et le sitemap. */
+/**
+ * Normalise une URL de site : ignore les valeurs vides, ajoute `https://`
+ * quand le protocole manque, retire la barre oblique finale.
+ * Rend `null` si la valeur est inexploitable, pour laisser jouer le repli.
+ */
+function normalizeSiteUrl(value: string | undefined): string | null {
+  const trimmed = value?.trim();
+  if (!trimmed) return null;
+
+  const candidate = /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+  try {
+    return new URL(candidate).href.replace(/\/$/, "");
+  } catch {
+    console.warn(`[site] URL ignorée car invalide : ${JSON.stringify(value)}`);
+    return null;
+  }
+}
+
+/**
+ * URL publique, utilisée pour les métadonnées absolues, le sitemap et robots.txt.
+ *
+ * Une variable déclarée mais vide ne doit jamais faire échouer le build : elle
+ * est traitée comme absente. À défaut de `NEXT_PUBLIC_SITE_URL`, on retombe sur
+ * le domaine de production fourni par Vercel, puis sur l'URL du déploiement
+ * courant (utile pour les previews), puis sur le développement local.
+ */
 export const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??
+  normalizeSiteUrl(process.env.NEXT_PUBLIC_SITE_URL) ??
+  normalizeSiteUrl(process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL) ??
+  normalizeSiteUrl(process.env.VERCEL_PROJECT_PRODUCTION_URL) ??
+  normalizeSiteUrl(process.env.NEXT_PUBLIC_VERCEL_URL) ??
+  normalizeSiteUrl(process.env.VERCEL_URL) ??
   "http://localhost:3000";
 
 export const ANNOUNCEMENTS = [
