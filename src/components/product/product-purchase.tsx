@@ -49,7 +49,7 @@ export function ProductPurchase({
       <div
         role="radiogroup"
         aria-label="Taille"
-        className="mt-[14px] flex overflow-hidden rounded-[10px] border border-black/18"
+        className="mt-[14px] flex overflow-hidden rounded-field border border-black/18"
       >
         {SIZES.map((option) => {
           const offered = product.sizes.includes(option);

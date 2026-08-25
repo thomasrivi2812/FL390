@@ -3,7 +3,7 @@ import { FLIGHT_STRIP } from "@/lib/site";
 /** Élément signature. Vocabulaire strictement cockpit — aucune donnée produit. */
 export function FlightStrip() {
   return (
-    <div className="mx-[22px] grid grid-cols-[repeat(auto-fit,minmax(130px,1fr))] overflow-hidden rounded-[14px] bg-ink text-paper">
+    <div className="mx-[22px] grid grid-cols-[repeat(auto-fit,minmax(130px,1fr))] overflow-hidden rounded-frame bg-ink text-paper">
       {FLIGHT_STRIP.map((cell) => (
         <div
           key={cell.key}

@@ -79,7 +79,7 @@ export function SiteHeader() {
 
           <Link
             href={DROP_BADGE.href}
-            className="hidden rounded-[5px] bg-burgundy px-[8px] py-[3px] text-paper transition-colors duration-300 hover:bg-ink min-[720px]:inline-block"
+            className="hidden rounded-badge bg-burgundy px-[8px] py-[3px] text-paper transition-colors duration-300 hover:bg-ink min-[720px]:inline-block"
           >
             {DROP_BADGE.label}
           </Link>

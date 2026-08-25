@@ -151,7 +151,7 @@ export function CartDrawer() {
                   <Link
                     href={`/shop/${product.slug}`}
                     onClick={handleClose}
-                    className="relative aspect-3/4 w-[84px] shrink-0 overflow-hidden rounded-[12px] bg-stone"
+                    className="relative aspect-3/4 w-[84px] shrink-0 overflow-hidden rounded-card bg-stone"
                   >
                     <Image
                       src={product.image}

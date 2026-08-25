@@ -5,8 +5,8 @@ import { CaptionPill } from "@/components/ui/caption-pill";
 
 export function LookbookTeaser() {
   return (
-    <section className="mx-[22px] mt-[34px] grid grid-cols-[repeat(auto-fit,minmax(min(100%,400px),1fr))] overflow-hidden rounded-[12px] bg-ink">
-      <div className="relative aspect-4/5 overflow-hidden rounded-tl-[12px]">
+    <section className="mx-[22px] mt-[34px] grid grid-cols-[repeat(auto-fit,minmax(min(100%,400px),1fr))] overflow-hidden rounded-card bg-ink">
+      <div className="relative aspect-4/5 overflow-hidden rounded-tl-card">
         <Image
           src="/img/cleared.png"
           alt="T-shirt Cleared For Takeoff, impression au dos"
@@ -39,7 +39,7 @@ export function LookbookTeaser() {
         </Link>
       </div>
 
-      <div className="relative col-span-full aspect-4/5 overflow-hidden rounded-b-[12px]">
+      <div className="relative col-span-full aspect-4/5 overflow-hidden rounded-b-card">
         <Image
           src="/img/departures.png"
           alt="T-shirt Departures, dix-huit codes OACI imprimés au dos"

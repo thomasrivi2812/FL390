@@ -49,7 +49,7 @@ export function SizeGuideDialog({
         role="dialog"
         aria-modal="true"
         aria-labelledby="size-guide-title"
-        className="animate-fl-fade-fast relative m-[12px] w-full max-w-[560px] rounded-[12px] bg-paper p-[clamp(22px,4vw,34px)]"
+        className="animate-fl-fade-fast relative m-[12px] w-full max-w-[560px] rounded-card bg-paper p-[clamp(22px,4vw,34px)]"
       >
         <div className="flex items-start justify-between gap-[20px]">
           <h2 id="size-guide-title" className={`${LABEL} m-0`}>

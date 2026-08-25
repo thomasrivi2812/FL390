@@ -15,6 +15,17 @@
   --color-olive: #27351b;
 }
 
+/* Rayons. Six paliers, du plus petit contrôle au plus grand panneau.
+   Les pastilles restent totalement arrondies (`rounded-[999px]`). */
+@theme {
+  --radius-badge: 4px;
+  --radius-control: 5px;
+  --radius-field: 7px;
+  --radius-card: 8px;
+  --radius-frame: 10px;
+  --radius-panel: 12px;
+}
+
 @theme inline {
   --font-display: var(--font-krona-one);
   --font-body: var(--font-work-sans);

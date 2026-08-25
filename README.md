@@ -94,6 +94,15 @@ document de référence.
 **Polices** — `font-display` (Krona One, display uniquement), `font-body`
 (Work Sans, copy), `font-label` (Titillium Web, micro-labels en capitales).
 
+**Rayons** — six paliers, en tokens : `rounded-badge` 4 px (pastille « Drop 01 »),
+`rounded-control` 5 px (badge et bouton « + » des cartes), `rounded-field` 7 px
+(sélecteur de taille), `rounded-card` 8 px (cartes, visuels, panneaux),
+`rounded-frame` 10 px (bandeau plan de vol, cadres de la galerie produit),
+`rounded-panel` 12 px (panneau manifeste). Les pastilles restent totalement
+arrondies (`rounded-[999px]`). Les valeurs sont définies une seule fois dans le
+bloc `@theme` de `globals.css` : les resserrer ou les élargir se fait là, pas
+dans les composants.
+
 **Glass** — trois recettes, pas une de plus : `.glass-nav` / `.glass-bar`
 (en-tête et barres), `.glass-pill` / `.glass-pill-cta` (posé sur une image),
 `.glass-control` (contrôle de carte). Chacune est doublée d'un repli opaque via

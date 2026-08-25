@@ -19,7 +19,7 @@ export function ProductCard({
 
   return (
     <article className="group flex flex-col">
-      <div className="relative aspect-3/4 overflow-hidden rounded-[12px] bg-stone">
+      <div className="relative aspect-3/4 overflow-hidden rounded-card bg-stone">
         <Link href={href} aria-label={product.name} className="absolute inset-0">
           <Image
             src={product.secondImage}
@@ -39,7 +39,7 @@ export function ProductCard({
           />
         </Link>
 
-        <span className="glass-control pointer-events-none absolute top-[12px] left-[12px] rounded-[7px] px-[11px] py-[7px] text-[12px] tracking-[0.06em] text-ink uppercase">
+        <span className="glass-control pointer-events-none absolute top-[12px] left-[12px] rounded-control px-[11px] py-[7px] text-[12px] tracking-[0.06em] text-ink uppercase">
           {product.tag}
         </span>
 
@@ -50,7 +50,7 @@ export function ProductCard({
           onClick={() => add(product.slug, defaultSize(product))}
           className="group/add absolute top-[6px] right-[6px] flex h-[44px] w-[44px] items-center justify-center"
         >
-          <span className="glass-control flex h-[32px] w-[32px] items-center justify-center rounded-[7px] text-[19px] leading-none font-light text-ink transition-transform duration-300 ease-out group-hover/add:rotate-90">
+          <span className="glass-control flex h-[32px] w-[32px] items-center justify-center rounded-control text-[19px] leading-none font-light text-ink transition-transform duration-300 ease-out group-hover/add:rotate-90">
             +
           </span>
         </button>

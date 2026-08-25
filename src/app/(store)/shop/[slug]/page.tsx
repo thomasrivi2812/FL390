@@ -47,7 +47,7 @@ export default async function ProductPage(props: PageProps<"/shop/[slug]">) {
   return (
     <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,380px),1fr))] items-start">
       <div className="flex flex-col gap-[14px] px-[22px] py-[18px] min-[760px]:pr-0">
-        <figure className="relative m-0 aspect-3/4 overflow-hidden rounded-[14px] bg-stone">
+        <figure className="relative m-0 aspect-3/4 overflow-hidden rounded-frame bg-stone">
           <Image
             src={product.image}
             alt={`${product.name} — impression dos`}
@@ -62,7 +62,7 @@ export default async function ProductPage(props: PageProps<"/shop/[slug]">) {
         </figure>
 
         {hasSecondView(product) && (
-          <figure className="relative m-0 aspect-3/4 overflow-hidden rounded-[14px] bg-stone">
+          <figure className="relative m-0 aspect-3/4 overflow-hidden rounded-frame bg-stone">
             <Image
               src={product.secondImage}
               alt={`${product.name} — porté sur le tarmac`}

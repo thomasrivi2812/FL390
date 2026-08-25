@@ -34,7 +34,7 @@ export default function LookbookPage() {
         {FIGURES.map((figure, index) => (
           <figure
             key={figure.src}
-            className="group relative m-0 aspect-3/4 overflow-hidden rounded-[12px] bg-stone"
+            className="group relative m-0 aspect-3/4 overflow-hidden rounded-card bg-stone"
           >
             <Image
               src={figure.src}
