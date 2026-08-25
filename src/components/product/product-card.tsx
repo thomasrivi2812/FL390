@@ -1,11 +1,14 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 
 import { useCart } from "@/components/cart/cart-provider";
 import { formatPrice } from "@/lib/format";
+import { ProductVisual } from "@/components/product/product-visual";
 import { defaultSize, type Product } from "@/lib/products";
+
+const CARD_SIZES =
+  "(min-width: 760px) 25vw, (min-width: 460px) 50vw, 100vw";
 
 export function ProductCard({
   product,
@@ -21,21 +24,19 @@ export function ProductCard({
     <article className="group flex flex-col">
       <div className="relative aspect-3/4 overflow-hidden rounded-card bg-stone">
         <Link href={href} aria-label={product.name} className="absolute inset-0">
-          <Image
+          <ProductVisual
             src={product.secondImage}
             alt={`${product.name} — impression dos`}
-            fill
             priority={priority}
-            sizes="(min-width: 760px) 25vw, (min-width: 460px) 50vw, 100vw"
-            className="object-cover"
+            sizes={CARD_SIZES}
+            className="absolute inset-0"
           />
-          <Image
+          <ProductVisual
             src={product.image}
             alt={`${product.name} — porté`}
-            fill
             priority={priority}
-            sizes="(min-width: 760px) 25vw, (min-width: 460px) 50vw, 100vw"
-            className="object-cover transition-opacity duration-500 ease-out group-hover:opacity-0"
+            sizes={CARD_SIZES}
+            className="absolute inset-0 transition-opacity duration-500 ease-out group-hover:opacity-0"
           />
         </Link>
 

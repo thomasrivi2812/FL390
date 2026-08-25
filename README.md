@@ -47,13 +47,40 @@ L'application est disponible sur http://localhost:3000.
 | Route | Contenu |
 | --- | --- |
 | `/` | Hero carrousel plein cadre, marquee typographique, grille « Nouvelles arrivées », bandeau plan de vol, diptyque lookbook, panneau manifeste |
-| `/shop` | Collection complète, barre de filtres sticky par taille (`?taille=M`) |
+| `/shop` | Collection, filtres sticky par rayon et par taille (`?categorie=sweats&taille=M`) |
 | `/shop/[slug]` | Fiche produit — galerie, sélecteur de taille, ajout au panier, tableau de specs |
 | `/lookbook` | Six visuels du drop |
 | `/livraison`, `/retours`, `/contact` | Pages informatives, gabarit partagé |
 
-`/shop/[slug]` est pré-rendu pour les cinq pièces (`generateStaticParams`).
-`/shop` est rendu à la demande, puisque le filtre vit dans l'URL.
+`/shop/[slug]` est pré-rendu pour toutes les pièces (`generateStaticParams`).
+`/shop` est rendu à la demande, puisque les filtres vivent dans l'URL.
+
+## Catalogue et rayons
+
+Trois rayons — T-shirts, Sweats, Accessoires — déclarés dans
+`src/lib/products.ts`, où chaque produit porte sa catégorie, ses specs et ses
+tailles. Une liste de tailles vide vaut taille unique : la fiche produit masque
+alors le sélecteur, le panier enregistre `TU`, et le rayon n'affiche pas de
+filtre par taille. Un produit sans photographie (`image: null`) rend un cadre
+« Visuel à venir » plutôt qu'une image cassée.
+
+## Navigation
+
+L'en-tête ouvre trois panneaux, tous rendus dans la même bande blanche
+(`NavFlyout`) sous la barre :
+
+- **Shop all** au survol — les trois rayons avec leur nombre de pièces, un
+  visuel du drop, et « Découvrir plus » vers la collection.
+- **Lookbook** au survol — quatre visuels du drop et « Découvrir plus ».
+- **Search** au clic — recherche dans le catalogue, filtrée côté client sur le
+  nom, le coloris, la description et le rayon.
+
+Le survol n'ouvre un panneau qu'au pointeur fin (`pointerType === "mouse"`) :
+au doigt, le lien navigue normalement. Un panneau ouvert force l'en-tête dans
+son état opaque, se ferme à la sortie du pointeur, par Échap, et au changement
+de page — cette dernière fermeture étant dérivée au rendu plutôt que par un
+effet. En dessous de 720 px la barre ne peut plus porter les liens : ils passent
+dans le menu du bouton de gauche.
 
 ## Structure
 
@@ -174,7 +201,9 @@ depuis le corps de la requête — et renvoyer `{ "url": "…" }`.
 | 2 | Newsletter | `NEWSLETTER_WEBHOOK_URL` à renseigner, sinon 503 |
 | 3 | Adresse de contact | `contact@fl390.paris` est un placeholder du handoff (`src/lib/site.ts`) |
 | 4 | Guide des tailles | Mesures plausibles à confirmer sur les pièces réelles (`src/lib/size-guide.ts`) |
-| 5 | Seconde prise de vue | Seul `climb-tee` en a une ; le survol des quatre autres cartes est sans effet |
+| 5 | Seconde prise de vue | Seul `climb-tee` en a une ; le survol des autres cartes est sans effet |
+| 5b | Photographie du tote | `remove-before-flight-tote` n'a pas de visuel — le cadre « Visuel à venir » s'affiche à sa place. Son prix (45 €) est également indicatif |
+| 5c | Rayon Sweats | Déclaré et navigable, mais sans produit : l'état vide s'affiche. À alimenter au Drop 02 |
 | 6 | Visuel Open Graph | Une photo produit fait office de repli — prévoir un 1200 × 630 dédié |
 | 7 | Favicon | `src/app/icon.svg` est un placeholder typographique |
 | 8 | Catalogue | Codé en dur dans `src/lib/products.ts` ; `getProducts`/`getProduct` sont asynchrones pour absorber un backend sans toucher aux pages |

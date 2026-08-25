@@ -19,16 +19,16 @@ import {
   setLineQuantity,
   subscribe,
 } from "@/lib/cart-store";
-import { findProduct, type Size } from "@/lib/products";
+import { findProduct, type SelectableSize } from "@/lib/products";
 
 type CartContextValue = {
   lines: CartLine[];
   count: number;
   subtotal: number;
   isOpen: boolean;
-  add: (slug: string, size: Size, quantity?: number) => void;
-  setQuantity: (slug: string, size: Size, quantity: number) => void;
-  remove: (slug: string, size: Size) => void;
+  add: (slug: string, size: SelectableSize, quantity?: number) => void;
+  setQuantity: (slug: string, size: SelectableSize, quantity: number) => void;
+  remove: (slug: string, size: SelectableSize) => void;
   clear: () => void;
   open: () => void;
   close: () => void;
@@ -40,7 +40,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const lines = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
   const [isOpen, setIsOpen] = useState(false);
 
-  const add = useCallback((slug: string, size: Size, quantity = 1) => {
+  const add = useCallback((slug: string, size: SelectableSize, quantity = 1) => {
     addLine(slug, size, quantity);
     setIsOpen(true);
   }, []);

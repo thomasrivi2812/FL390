@@ -1,12 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useCart } from "@/components/cart/cart-provider";
 import { formatPrice } from "@/lib/format";
-import { findProduct } from "@/lib/products";
+import { ProductVisual } from "@/components/product/product-visual";
+import { findProduct, ONE_SIZE } from "@/lib/products";
 
 const LABEL =
   "font-label font-bold text-[9px] tracking-[0.28em] uppercase";
@@ -153,12 +153,11 @@ export function CartDrawer() {
                     onClick={handleClose}
                     className="relative aspect-3/4 w-[84px] shrink-0 overflow-hidden rounded-card bg-stone"
                   >
-                    <Image
+                    <ProductVisual
                       src={product.image}
                       alt={product.name}
-                      fill
                       sizes="84px"
-                      className="object-cover"
+                      className="absolute inset-0"
                     />
                   </Link>
                   <div className="flex min-w-0 flex-1 flex-col">
@@ -176,7 +175,9 @@ export function CartDrawer() {
                     </div>
                     <span
                       className={`${LABEL} mt-[8px] text-black/42`}
-                    >{`Taille ${line.size}`}</span>
+                    >
+                      {line.size === ONE_SIZE ? "Taille unique" : `Taille ${line.size}`}
+                    </span>
                     <div className="mt-auto flex items-center justify-between gap-3 pt-[12px]">
                       <div className="flex items-center rounded-[999px] border border-black/18">
                         <button

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { ProductPurchase } from "@/components/product/product-purchase";
+import { ProductVisual } from "@/components/product/product-visual";
 import { CaptionPill } from "@/components/ui/caption-pill";
 import { formatPrice } from "@/lib/format";
 import {
@@ -11,7 +11,6 @@ import {
   getProducts,
   hasSecondView,
   productMeta,
-  SPEC_ROWS,
 } from "@/lib/products";
 
 export async function generateStaticParams() {
@@ -32,7 +31,7 @@ export async function generateMetadata(
     openGraph: {
       title: product.name,
       description: product.description,
-      images: [{ url: product.image }],
+      images: product.image ? [{ url: product.image }] : undefined,
     },
   };
 }
@@ -48,13 +47,12 @@ export default async function ProductPage(props: PageProps<"/shop/[slug]">) {
     <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,380px),1fr))] items-start">
       <div className="flex flex-col gap-[14px] px-[22px] py-[18px] min-[760px]:pr-0">
         <figure className="relative m-0 aspect-3/4 overflow-hidden rounded-frame bg-stone">
-          <Image
+          <ProductVisual
             src={product.image}
             alt={`${product.name} — impression dos`}
-            fill
             priority
             sizes="(min-width: 760px) 50vw, 100vw"
-            className="object-cover"
+            className="absolute inset-0"
           />
           <CaptionPill className="bottom-[14px] left-[14px]">
             Dos — impression
@@ -63,12 +61,11 @@ export default async function ProductPage(props: PageProps<"/shop/[slug]">) {
 
         {hasSecondView(product) && (
           <figure className="relative m-0 aspect-3/4 overflow-hidden rounded-frame bg-stone">
-            <Image
+            <ProductVisual
               src={product.secondImage}
               alt={`${product.name} — porté sur le tarmac`}
-              fill
               sizes="(min-width: 760px) 50vw, 100vw"
-              className="object-cover"
+              className="absolute inset-0"
             />
             <CaptionPill className="bottom-[14px] left-[14px]">
               Porté — tarmac
@@ -103,7 +100,7 @@ export default async function ProductPage(props: PageProps<"/shop/[slug]">) {
         <ProductPurchase key={product.slug} product={product} />
 
         <dl className="mt-[40px] mb-0 border-t border-ink">
-          {SPEC_ROWS.map((row) => (
+          {product.specs.map((row) => (
             <div
               key={row.key}
               className="grid grid-cols-[minmax(100px,0.7fr)_1fr] gap-[16px] border-b border-black/14 py-[13px]"

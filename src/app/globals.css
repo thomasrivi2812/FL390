@@ -60,6 +60,15 @@
     background: var(--color-burgundy);
     color: var(--color-paper);
   }
+
+  /* Chromium décore les champs de recherche d'une croix d'effacement bleue,
+     hors charte. Le champ garde son type pour la sémantique. */
+  input[type="search"]::-webkit-search-cancel-button,
+  input[type="search"]::-webkit-search-decoration,
+  input[type="search"]::-webkit-search-results-button {
+    -webkit-appearance: none;
+    appearance: none;
+  }
 }
 
 /* ---------------------------------------------------------------------------

@@ -5,7 +5,15 @@ import { useEffect, useState } from "react";
 import { useCart } from "@/components/cart/cart-provider";
 import { SizeGuideDialog } from "@/components/product/size-guide-dialog";
 import { formatPrice } from "@/lib/format";
-import { defaultSize, SIZES, type Product, type Size } from "@/lib/products";
+import {
+  defaultSize,
+  isOneSize,
+  ONE_SIZE,
+  SIZES,
+  type Product,
+  type SelectableSize,
+  type Size,
+} from "@/lib/products";
 
 const LABEL = "font-label text-[9px] font-bold tracking-[0.28em] uppercase";
 
@@ -21,7 +29,7 @@ export function ProductPurchase({
   soldOut?: Size[];
 }) {
   const { add } = useCart();
-  const [size, setSize] = useState<Size>(() => defaultSize(product));
+  const [size, setSize] = useState<SelectableSize>(() => defaultSize(product));
   const [guideOpen, setGuideOpen] = useState(false);
   const [added, setAdded] = useState(false);
 
@@ -31,24 +39,32 @@ export function ProductPurchase({
     return () => clearTimeout(timer);
   }, [added]);
 
-  const unavailable = soldOut.includes(size);
+  const oneSize = isOneSize(product);
+  const unavailable = size !== ONE_SIZE && soldOut.includes(size as Size);
 
   return (
     <>
-      <div className={`${LABEL} mt-[36px] flex items-baseline justify-between gap-[16px]`}>
-        <span>Taille</span>
-        <button
-          type="button"
-          onClick={() => setGuideOpen(true)}
-          className="text-black/42 transition-colors duration-300 hover:text-ink"
+      {oneSize ? (
+        <p className={`${LABEL} mt-[36px] mb-0 text-black/42`}>Taille unique</p>
+      ) : (
+        <div
+          className={`${LABEL} mt-[36px] flex items-baseline justify-between gap-[16px]`}
         >
-          Guide des tailles
-        </button>
-      </div>
+          <span>Taille</span>
+          <button
+            type="button"
+            onClick={() => setGuideOpen(true)}
+            className="text-black/42 transition-colors duration-300 hover:text-ink"
+          >
+            Guide des tailles
+          </button>
+        </div>
+      )}
 
       <div
         role="radiogroup"
         aria-label="Taille"
+        hidden={oneSize}
         className="mt-[14px] flex overflow-hidden rounded-field border border-black/18"
       >
         {SIZES.map((option) => {

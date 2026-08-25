@@ -1,8 +1,13 @@
-import { findProduct, isSize, type Size } from "@/lib/products";
+import {
+  findProduct,
+  isSize,
+  ONE_SIZE,
+  type SelectableSize,
+} from "@/lib/products";
 
 export type CartLine = {
   slug: string;
-  size: Size;
+  size: SelectableSize;
   quantity: number;
 };
 
@@ -34,7 +39,8 @@ function read(): CartLine[] {
       if (typeof entry !== "object" || entry === null) return [];
       const { slug, size, quantity } = entry as Record<string, unknown>;
       if (typeof slug !== "string" || !findProduct(slug)) return [];
-      if (typeof size !== "string" || !isSize(size)) return [];
+      if (typeof size !== "string") return [];
+      if (!isSize(size) && size !== ONE_SIZE) return [];
       if (typeof quantity !== "number" || !Number.isFinite(quantity)) return [];
       return [{ slug, size, quantity: clampQuantity(quantity) }];
     });
@@ -84,7 +90,7 @@ function commit(next: CartLine[]) {
   for (const listener of listeners) listener();
 }
 
-export function addLine(slug: string, size: Size, quantity = 1) {
+export function addLine(slug: string, size: SelectableSize, quantity = 1) {
   const index = lines.findIndex(
     (line) => line.slug === slug && line.size === size,
   );
@@ -99,7 +105,11 @@ export function addLine(slug: string, size: Size, quantity = 1) {
   );
 }
 
-export function setLineQuantity(slug: string, size: Size, quantity: number) {
+export function setLineQuantity(
+  slug: string,
+  size: SelectableSize,
+  quantity: number,
+) {
   commit(
     quantity <= 0
       ? lines.filter((line) => !(line.slug === slug && line.size === size))
@@ -111,7 +121,7 @@ export function setLineQuantity(slug: string, size: Size, quantity: number) {
   );
 }
 
-export function removeLine(slug: string, size: Size) {
+export function removeLine(slug: string, size: SelectableSize) {
   commit(lines.filter((line) => !(line.slug === slug && line.size === size)));
 }
 

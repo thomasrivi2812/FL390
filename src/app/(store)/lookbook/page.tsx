@@ -3,20 +3,12 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { CaptionPill } from "@/components/ui/caption-pill";
+import { LOOKBOOK } from "@/lib/lookbook";
 
 export const metadata: Metadata = {
   title: "Lookbook",
   description: "Drop 01 · Tarmac · 2026 — les six visuels de la collection.",
 };
-
-const FIGURES = [
-  { src: "/img/cleared-navy.png", caption: "01 — Cleared, navy" },
-  { src: "/img/cdg-lhr.png", caption: "02 — CDG · LHR" },
-  { src: "/img/climb-bw.png", caption: "03 — Climb, N&B" },
-  { src: "/img/cleared.png", caption: "04 — Cleared" },
-  { src: "/img/departures.png", caption: "05 — Departures" },
-  { src: "/img/climb.png", caption: "06 — Climb, couleur" },
-] as const;
 
 export default function LookbookPage() {
   return (
@@ -31,7 +23,7 @@ export default function LookbookPage() {
       </div>
 
       <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] gap-[14px] px-[22px] py-[18px]">
-        {FIGURES.map((figure, index) => (
+        {LOOKBOOK.map((figure, index) => (
           <figure
             key={figure.src}
             className="group relative m-0 aspect-3/4 overflow-hidden rounded-card bg-stone"
