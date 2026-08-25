@@ -46,7 +46,7 @@ L'application est disponible sur http://localhost:3000.
 
 | Route | Contenu |
 | --- | --- |
-| `/` | Hero carrousel plein cadre, marquee typographique, grille « Nouvelles arrivées », bandeau plan de vol, teaser lookbook, panneau manifeste |
+| `/` | Hero carrousel plein cadre, marquee typographique, grille « Nouvelles arrivées », bandeau plan de vol, diptyque lookbook, panneau manifeste |
 | `/shop` | Collection complète, barre de filtres sticky par taille (`?taille=M`) |
 | `/shop/[slug]` | Fiche produit — galerie, sélecteur de taille, ajout au panier, tableau de specs |
 | `/lookbook` | Six visuels du drop |
@@ -129,6 +129,12 @@ transitions, et la rotation du hero est également désactivée côté JavaScrip
 Le handoff ne spécifie que le rendu large. Les décisions prises en dessous :
 
 - Grilles produit : 4 colonnes ≥ 760 px, 2 ≥ 460 px, 1 en dessous.
+- Diptyque lookbook : deux colonnes ≥ 760 px, empilées en dessous. Le handoff
+  prévoyait une grille `auto-fit` qui ouvrait une troisième colonne au-delà de
+  1200 px, laissée vide en noir par la bande basse ; elle est remplacée par deux
+  colonnes fixes, la copy posée sur la photographie de gauche. En colonne unique
+  la cellule s'étire au lieu d'imposer son ratio, la copy étant alors plus haute
+  que la photo ne le permet.
 - Fiche produit : colonne d'info sticky ≥ 760 px, empilée en dessous (le filet
   passe de `border-left` à `border-top`).
 - En-tête : la barre dessinée n'entre pas sous 720 px. Les liens « Shop all »,
