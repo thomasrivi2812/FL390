@@ -129,6 +129,12 @@ transitions, et la rotation du hero est également désactivée côté JavaScrip
 Le handoff ne spécifie que le rendu large. Les décisions prises en dessous :
 
 - Grilles produit : 4 colonnes ≥ 760 px, 2 ≥ 460 px, 1 en dessous.
+- Bandeau plan de vol : cinq colonnes ≥ 760 px, deux en dessous, la dernière
+  cellule couvrant la largeur restante. Le handoff prévoyait une grille
+  `auto-fit`, qui laissait une cellule vide en fin de grille — invisible sur le
+  fond noir d'origine, mais lue comme un aplat gris depuis le passage au fond
+  papier. Les filets viennent d'un `gap` d'un pixel, pour rester corrects entre
+  les rangées lors du passage à la ligne.
 - Diptyque lookbook : deux colonnes ≥ 760 px, empilées en dessous. Le handoff
   prévoyait une grille `auto-fit` qui ouvrait une troisième colonne au-delà de
   1200 px, laissée vide en noir par la bande basse ; elle est remplacée par deux
