@@ -33,9 +33,13 @@
 }
 
 :root {
-  /* Hauteur de l'en-tête fixe. Les décalages sticky et le spacer des pages
-     internes en dépendent — ne pas la changer isolément. */
+  /* Hauteur de la barre de navigation. */
   --header-height: 62px;
+
+  /* Encombrement réel de l'en-tête fixe, encoche comprise. C'est cette valeur
+     que suivent le spacer des pages internes et les décalages sticky — sur un
+     téléphone à encoche, l'en-tête est repoussé sous la barre d'état. */
+  --header-offset: calc(62px + env(safe-area-inset-top, 0px));
 }
 
 @layer base {
@@ -49,6 +53,18 @@
     font-family: var(--font-body), sans-serif;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
+  }
+
+  /* Réserve sous le pied de page quand la fiche produit affiche sa barre
+     d'achat collée, qui n'existe qu'en dessous de 760 px. */
+  body[data-sticky-buy] {
+    padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+  }
+
+  @media (width >= 760px) {
+    body[data-sticky-buy] {
+      padding-bottom: 0;
+    }
   }
 
   :focus-visible {
@@ -103,6 +119,15 @@
     backdrop-filter: blur(18px) saturate(180%);
     border: 1px solid rgb(253 253 253 / 0.3);
     box-shadow: inset 0 1px 0 rgb(253 253 253 / 0.28);
+  }
+
+  /* Défilement horizontal sans barre visible, pour les rubans tactiles. */
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
   }
 
   /* Tier 3 — contrôle posé sur une carte produit */

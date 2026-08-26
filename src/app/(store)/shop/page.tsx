@@ -57,6 +57,14 @@ export default async function ShopPage(props: PageProps<"/shop">) {
             {findCategory(category).blurb}
           </p>
         )}
+        {/* Le compte quitte la barre collée sur téléphone, où chaque pixel de
+            hauteur est pris sur les produits. */}
+        <p
+          aria-live="polite"
+          className="font-label mt-[14px] mb-0 text-[10px] font-bold tracking-[0.22em] text-black/42 uppercase min-[760px]:hidden"
+        >
+          {filtered.length === 1 ? "1 pièce" : `${filtered.length} pièces`}
+        </p>
       </div>
 
       <ShopFilters

@@ -65,12 +65,12 @@ export function NewsletterForm() {
           value={email}
           onChange={(event) => setEmail(event.target.value)}
           disabled={status === "loading"}
-          className="font-label min-w-0 flex-1 border-0 bg-transparent py-[10px] text-[13px] text-paper placeholder:text-paper/40 focus:outline-none"
+          className="font-label min-w-0 flex-1 border-0 bg-transparent py-[15px] text-[13px] text-paper placeholder:text-paper/40 focus:outline-none"
         />
         <button
           type="submit"
           disabled={status === "loading"}
-          className="font-label px-[10px] py-[8px] text-[11px] font-bold tracking-[0.2em] text-paper uppercase transition-colors duration-300 hover:text-burgundy disabled:opacity-50"
+          className="font-label min-h-[44px] px-[14px] text-[11px] font-bold tracking-[0.2em] text-paper uppercase transition-colors duration-300 hover:text-burgundy disabled:opacity-50"
         >
           {status === "loading" ? "…" : "OK"}
         </button>

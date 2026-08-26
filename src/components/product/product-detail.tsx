@@ -51,6 +51,18 @@ export function ProductDetail({
   const [guideOpen, setGuideOpen] = useState(false);
   const [added, setAdded] = useState(false);
 
+  /**
+   * Marque le document tant que la barre d'achat collée est montée. Le pied de
+   * page est rendu après `<main>` : seule une réserve posée sur le `body` le
+   * dégage réellement de la barre en fin de défilement.
+   */
+  useEffect(() => {
+    document.body.dataset.stickyBuy = "true";
+    return () => {
+      delete document.body.dataset.stickyBuy;
+    };
+  }, []);
+
   useEffect(() => {
     if (!added) return;
     const timer = setTimeout(() => setAdded(false), 2400);
@@ -76,11 +88,15 @@ export function ProductDetail({
 
   return (
     <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,380px),1fr))] items-start">
-      <div className="flex flex-col gap-[14px] px-[22px] py-[18px] min-[760px]:pr-0">
+      {/* Sur téléphone la galerie devient un ruban : empilée, elle repoussait le
+          prix et le bouton d'achat à plus de deux écrans de défilement. Chaque
+          visuel occupe 86 % de la largeur, laissant apparaître le suivant —
+          c'est ce qui signale qu'on peut faire glisser. */}
+      <div className="no-scrollbar flex snap-x snap-mandatory gap-[8px] overflow-x-auto scroll-pl-[22px] px-[22px] py-[18px] min-[760px]:flex-col min-[760px]:gap-[14px] min-[760px]:overflow-x-visible min-[760px]:pr-0">
         {colorway.images.map((image, index) => (
           <figure
             key={image.src}
-            className="relative m-0 aspect-3/4 overflow-hidden rounded-frame bg-stone"
+            className="relative m-0 aspect-3/4 w-[86%] shrink-0 snap-start overflow-hidden rounded-frame bg-stone min-[760px]:w-auto min-[760px]:shrink"
           >
             <ProductVisual
               src={image.src}
@@ -96,10 +112,10 @@ export function ProductDetail({
         ))}
       </div>
 
-      <div className="border-t border-black/10 px-[clamp(22px,4vw,60px)] py-[clamp(28px,4vw,64px)] min-[760px]:sticky min-[760px]:top-(--header-height) min-[760px]:border-t-0 min-[760px]:border-l">
+      <div className="border-t border-black/10 px-[clamp(22px,4vw,60px)] py-[clamp(28px,4vw,64px)] min-[760px]:sticky min-[760px]:top-(--header-offset) min-[760px]:border-t-0 min-[760px]:border-l">
         <Link
           href="/shop"
-          className={`${KEY} tracking-[0.28em] text-black/42 transition-colors duration-300 hover:text-ink`}
+          className={`${KEY} -my-[15px] inline-block py-[15px] tracking-[0.28em] text-black/42 transition-colors duration-300 hover:text-ink`}
         >
           ← Shop all
         </Link>
@@ -132,7 +148,7 @@ export function ProductDetail({
             <div
               role="radiogroup"
               aria-label="Couleur"
-              className="mt-[14px] flex gap-[12px]"
+              className="mt-[14px] flex"
             >
               {product.colorways.map((item) => (
                 <button
@@ -142,13 +158,17 @@ export function ProductDetail({
                   aria-checked={item.id === colorway.id}
                   aria-label={item.label}
                   onClick={() => pickColorway(item.id)}
-                  className={`h-[22px] w-[22px] rounded-[999px] border border-black/30 transition-[outline-color] duration-[220ms] outline outline-1 outline-offset-[3px] ${
-                    item.id === colorway.id
-                      ? "outline-ink"
-                      : "outline-transparent hover:outline-black/30"
-                  }`}
-                  style={{ background: item.hex }}
-                />
+                  className="-my-[11px] flex h-[44px] w-[30px] items-center justify-start"
+                >
+                  <span
+                    className={`h-[22px] w-[22px] rounded-[999px] border border-black/30 transition-[outline-color] duration-[220ms] outline outline-1 outline-offset-[3px] ${
+                      item.id === colorway.id
+                        ? "outline-ink"
+                        : "outline-transparent hover:outline-black/30"
+                    }`}
+                    style={{ background: item.hex }}
+                  />
+                </button>
               ))}
             </div>
           </>
@@ -166,7 +186,7 @@ export function ProductDetail({
             <button
               type="button"
               onClick={() => setGuideOpen(true)}
-              className="text-black/42 transition-colors duration-300 hover:text-ink"
+              className="-my-[15px] py-[15px] text-black/42 transition-colors duration-300 hover:text-ink"
             >
               Guide des tailles
             </button>
@@ -249,13 +269,13 @@ export function ProductDetail({
         <div className="mt-[26px] flex flex-wrap gap-x-[28px] gap-y-[12px]">
           <Link
             href="/livraison"
-            className={`${KEY} border-b border-black/30 tracking-[0.24em] transition-colors duration-300 hover:text-burgundy`}
+            className={`${KEY} -my-[14px] inline-block border-b border-black/30 py-[14px] tracking-[0.24em] transition-colors duration-300 hover:text-burgundy`}
           >
             Expédié 24–48h
           </Link>
           <Link
             href="/retours"
-            className={`${KEY} border-b border-black/30 tracking-[0.24em] transition-colors duration-300 hover:text-burgundy`}
+            className={`${KEY} -my-[14px] inline-block border-b border-black/30 py-[14px] tracking-[0.24em] transition-colors duration-300 hover:text-burgundy`}
           >
             Retours 15 jours
           </Link>
@@ -263,6 +283,25 @@ export function ProductDetail({
 
         <SizeGuideDialog open={guideOpen} onClose={() => setGuideOpen(false)} />
       </div>
+
+      {/* Le bouton du flux reste en place, sous le sélecteur de taille ; celui-ci
+          garantit qu'on peut acheter depuis n'importe quel point de la page. */}
+      <div className="glass-bar fixed inset-x-0 bottom-0 z-40 border-t border-black/12 px-[22px] pt-[12px] pb-[calc(12px+env(safe-area-inset-bottom,0px))] min-[760px]:hidden">
+        <button
+          type="button"
+          disabled={unavailable}
+          onClick={() => {
+            add(product.slug, colorway.id, size);
+            setAdded(true);
+          }}
+          className="font-label w-full rounded-[999px] bg-ink py-[18px] text-[12px] font-bold tracking-[0.28em] text-paper uppercase transition-colors duration-300 hover:bg-burgundy disabled:opacity-60"
+        >
+          {unavailable
+            ? `Taille ${size} épuisée`
+            : `Ajouter — ${formatPrice(product.price)}`}
+        </button>
+      </div>
+
     </div>
   );
 }

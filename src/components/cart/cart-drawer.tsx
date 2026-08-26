@@ -244,7 +244,7 @@ export function CartDrawer() {
         )}
 
         {lines.length > 0 && (
-          <div className="border-t border-ink px-[22px] py-[18px]">
+          <div className="border-t border-ink px-[22px] pt-[18px] pb-[calc(18px+env(safe-area-inset-bottom,0px))]">
             <div className="flex items-baseline justify-between">
               <span className={`${LABEL} text-black/42`}>Sous-total</span>
               <span className="font-label text-[19px] font-bold">

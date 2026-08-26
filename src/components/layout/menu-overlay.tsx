@@ -74,9 +74,9 @@ export function MenuOverlay({
         role="dialog"
         aria-modal="true"
         aria-label="Menu"
-        className="animate-fl-fade-fast absolute inset-x-0 top-0 bg-paper px-[22px] pb-[clamp(34px,6vw,60px)]"
+        className="animate-fl-fade-fast absolute inset-x-0 top-0 bg-paper px-[22px] pb-[calc(clamp(34px,6vw,60px)+env(safe-area-inset-bottom,0px))]"
       >
-        <div className="flex h-(--header-height) items-center justify-end">
+        <div className="flex h-(--header-offset) items-center justify-end">
           <button
             ref={closeButtonRef}
             type="button"

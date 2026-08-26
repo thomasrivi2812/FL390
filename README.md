@@ -178,6 +178,34 @@ rende le bon état dès l'hydratation.
 **Mouvement** — `prefers-reduced-motion: reduce` coupe globalement animations et
 transitions, et la rotation du hero est également désactivée côté JavaScript.
 
+### Ergonomie tactile
+
+Le parcours a été mesuré à 390 px, puis corrigé sur ce que les mesures
+montraient :
+
+| | Avant | Après |
+| --- | --- | --- |
+| Fiche produit → bouton d'achat | 1989 px, soit 2,4 écrans | 974 px, soit 1,2 écran |
+| Hauteur de la fiche produit | 3123 px | 2193 px |
+| Barre de filtres collée | 109 px, 13 % de l'écran | 71 px, 8 % |
+
+- **Galerie produit** : ruban défilant horizontalement sous 760 px, chaque
+  visuel occupant 86 % de la largeur utile pour laisser apparaître le suivant.
+  Empilée, elle repoussait le prix et l'achat à plus de deux écrans.
+- **Barre d'achat collée** en bas sous 760 px. Le pied de page étant rendu après
+  `<main>`, une cale interne ne l'aurait pas dégagé : la fiche marque le `body`
+  d'un `data-sticky-buy`, et la réserve est posée là.
+- **Barre de filtres** sur une seule ligne que l'on fait glisser ; le compte de
+  pièces passe dans le bloc de titre, qui n'est pas collé.
+- **Cibles tactiles** portées à 44 px sans déplacer le dessin : le point de
+  coloris garde ses 11 px, c'est le bouton qui s'agrandit, compensé par une
+  marge négative. Même principe pour l'en-tête, les indicateurs du carrousel,
+  les liens de la fiche et du pied de page.
+- **Zones sûres** : l'en-tête se décale sous l'encoche
+  (`env(safe-area-inset-top)`), et le tiroir, le menu et la barre d'achat
+  dégagent la barre d'accueil. `--header-offset` porte l'encombrement réel, et
+  c'est lui que suivent le spacer et les décalages collés.
+
 ### Complétions responsives
 
 Le handoff ne spécifie que le rendu large. Les décisions prises en dessous :

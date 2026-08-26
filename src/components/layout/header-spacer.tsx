@@ -3,5 +3,5 @@
  * dont le hero passe volontairement sous le glass.
  */
 export function HeaderSpacer() {
-  return <div aria-hidden className="h-(--header-height) flex-none" />;
+  return <div aria-hidden className="h-(--header-offset) flex-none" />;
 }

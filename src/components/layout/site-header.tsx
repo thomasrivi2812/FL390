@@ -88,7 +88,7 @@ export function SiteHeader() {
   return (
     <>
       <header
-        className="fixed inset-x-0 top-0 z-60"
+        className="fixed inset-x-0 top-0 z-60 pt-[env(safe-area-inset-top,0px)]"
         onPointerLeave={(event) => {
           if (event.pointerType === "mouse" && panel !== "search") closePanel();
         }}
@@ -109,10 +109,10 @@ export function SiteHeader() {
               onClick={() => setMenuOpen(true)}
               aria-label="Ouvrir le menu"
               aria-expanded={menuOpen}
-              className="-my-[10px] flex w-[22px] shrink-0 flex-col gap-[5px] py-[10px]"
+              className="-my-[15px] -ml-[11px] flex h-[44px] w-[44px] shrink-0 flex-col items-center justify-center gap-[5px]"
             >
-              <span className="block h-[1.5px] bg-current" />
-              <span className="block h-[1.5px] bg-current" />
+              <span className="block h-[1.5px] w-[22px] bg-current" />
+              <span className="block h-[1.5px] w-[22px] bg-current" />
             </button>
 
             <Link
@@ -120,7 +120,7 @@ export function SiteHeader() {
               onPointerEnter={hover("shop")}
               onFocus={() => setPanel("shop")}
               aria-expanded={panel === "shop"}
-              className={`${link} hidden min-[720px]:inline`}
+              className={`${link} -my-[13px] hidden py-[13px] min-[720px]:inline-block`}
             >
               Shop all
             </Link>
@@ -130,7 +130,7 @@ export function SiteHeader() {
               onPointerEnter={hover("lookbook")}
               onFocus={() => setPanel("lookbook")}
               aria-expanded={panel === "lookbook"}
-              className={`${link} hidden min-[720px]:inline`}
+              className={`${link} -my-[13px] hidden py-[13px] min-[720px]:inline-block`}
             >
               Lookbook
             </Link>
@@ -146,7 +146,11 @@ export function SiteHeader() {
             </Link>
           </nav>
 
-          <Link href="/" aria-label={`${SITE.fullName} — accueil`}>
+          <Link
+            href="/"
+            aria-label={`${SITE.fullName} — accueil`}
+            className="-my-[8px] flex items-center justify-center py-[8px]"
+          >
             <Wordmark
               markClassName="text-[19px]"
               cityClassName="text-[7px] tracking-[0.62em] indent-[0.62em]"
@@ -162,14 +166,14 @@ export function SiteHeader() {
                 requestAnimationFrame(() => searchInputRef.current?.focus());
               }}
               aria-expanded={panel === "search"}
-              className={link}
+              className={`${link} -my-[13px] py-[13px]`}
             >
               Search
             </button>
 
             <Link
               href="/contact"
-              className={`${link} hidden min-[560px]:inline`}
+              className={`${link} -my-[13px] hidden py-[13px] min-[560px]:inline-block`}
             >
               Contact
             </Link>
@@ -182,7 +186,7 @@ export function SiteHeader() {
               type="button"
               onClick={openCart}
               onPointerEnter={hover(null)}
-              className={`${link} flex items-center gap-[7px] whitespace-nowrap`}
+              className={`${link} -my-[13px] flex items-center gap-[7px] py-[13px] whitespace-nowrap`}
             >
               Panier
               <span className="inline-flex h-[19px] min-w-[19px] items-center justify-center rounded-[999px] bg-current px-[5px] text-[10px] font-bold">

@@ -14,12 +14,14 @@ export function SiteFooter() {
         {FOOTER_COLUMNS.map((column) => (
           <div key={column.heading}>
             <h2 className={`${HEADING} m-0`}>{column.heading}</h2>
-            <ul className="m-0 mt-[18px] flex list-none flex-col gap-[12px] p-0">
+            <ul className="m-0 mt-[10px] flex list-none flex-col p-0">
               {column.links.map((link) => (
                 <li key={link.href}>
+                  {/* Bloc et rembourrage vertical : au doigt, un lien de 15 px
+                      de haut n'est pas une cible atteignable. */}
                   <Link
                     href={link.href}
-                    className="font-label text-[10px] font-bold tracking-[0.2em] uppercase transition-colors duration-300 hover:text-burgundy"
+                    className="font-label block py-[14px] text-[10px] font-bold tracking-[0.2em] uppercase transition-colors duration-300 hover:text-burgundy"
                   >
                     {link.label}
                   </Link>

@@ -27,7 +27,7 @@ export default async function HomePage() {
           </h2>
           <Link
             href="/shop"
-            className="border-b border-ink pb-[2px] text-[13px] tracking-[0.08em] whitespace-nowrap uppercase transition-opacity duration-300 hover:opacity-55"
+            className="-my-[12px] inline-block border-b border-ink py-[12px] text-[13px] tracking-[0.08em] whitespace-nowrap uppercase transition-opacity duration-300 hover:opacity-55"
           >
             Tout voir
           </Link>

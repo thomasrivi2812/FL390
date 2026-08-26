@@ -101,7 +101,7 @@ export function HeroCarousel() {
               onClick={() => pick(slideIndex)}
               aria-label={`Visuel ${slideIndex + 1}`}
               aria-current={slideIndex === index}
-              className="-my-[10px] w-[46px] py-[10px]"
+              className="-my-[21px] w-[46px] py-[21px]"
             >
               <span className="block h-[2px] w-full overflow-hidden bg-paper/30">
                 <span

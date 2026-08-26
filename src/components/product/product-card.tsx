@@ -87,8 +87,10 @@ export function ProductCard({
         <div
           role="radiogroup"
           aria-label={`Coloris de ${product.name}`}
-          className="flex gap-[7px] px-[4px] pt-[10px]"
+          className="-my-[16px] flex px-[4px] pt-[10px]"
         >
+          {/* Le point garde ses 11 px ; c'est le bouton qui porte la cible
+              tactile de 44 px de haut, sans décaler la mise en page. */}
           {product.colorways.map((item) => (
             <button
               key={item.id}
@@ -100,13 +102,15 @@ export function ProductCard({
               onPointerEnter={(event) => {
                 if (event.pointerType === "mouse") setColorwayId(item.id);
               }}
-              className={`h-[11px] w-[11px] rounded-[999px] border transition-[outline-color] duration-[220ms] ${
-                item.id === colorway.id
-                  ? "border-black/30 outline outline-1 outline-offset-[3px] outline-ink"
-                  : "border-black/30 outline outline-1 outline-offset-[3px] outline-transparent"
-              }`}
-              style={{ background: item.hex }}
-            />
+              className="flex h-[44px] w-[18px] items-center justify-center"
+            >
+              <span
+                className={`h-[11px] w-[11px] rounded-[999px] border border-black/30 outline outline-1 outline-offset-[3px] transition-[outline-color] duration-[220ms] ${
+                  item.id === colorway.id ? "outline-ink" : "outline-transparent"
+                }`}
+                style={{ background: item.hex }}
+              />
+            </button>
           ))}
         </div>
       ) : (

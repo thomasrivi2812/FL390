@@ -3,11 +3,16 @@ import Link from "next/link";
 import { CATEGORIES, SIZES, type CategorySlug, type Size } from "@/lib/products";
 
 /**
- * Barre de filtres sticky, calée sous l'en-tête fixe.
+ * Barre de filtres collée sous l'en-tête fixe.
  *
  * Les deux filtres vivent dans l'URL (`?categorie=sweats&taille=M`) : liens
  * partageables, retour arrière fonctionnel, rendu côté serveur. Chaque pastille
  * active se désactive en la recliquant.
+ *
+ * Sur téléphone, rayons et tailles tiennent sur une seule ligne que l'on fait
+ * glisser : sur deux lignes, la barre mangeait 109 px, soit 13 % de l'écran, en
+ * plus des 62 px d'en-tête. Le compte de pièces passe alors dans le bloc de
+ * titre, qui lui n'est pas collé.
  */
 export function ShopFilters({
   category,
@@ -34,43 +39,51 @@ export function ShopFilters({
   };
 
   return (
-    <div className="glass-bar sticky top-(--header-height) z-30 flex flex-wrap items-center justify-between gap-x-[18px] gap-y-[12px] border-b border-black/12 px-[22px] py-[13px]">
-      <div className="flex flex-wrap items-center gap-[8px]">
-        <Pill href={categoryHref(null)} active={category === null}>
-          Tout
-        </Pill>
-        {CATEGORIES.map((item) => (
-          <Pill
-            key={item.slug}
-            href={categoryHref(category === item.slug ? null : item.slug)}
-            active={category === item.slug}
-          >
-            {item.label}
+    <div className="glass-bar sticky top-(--header-offset) z-30 border-b border-black/12">
+      <div className="no-scrollbar flex items-center gap-[8px] overflow-x-auto px-[22px] py-[13px] min-[760px]:flex-wrap min-[760px]:justify-between min-[760px]:gap-x-[18px] min-[760px]:gap-y-[12px] min-[760px]:overflow-x-visible">
+        <div className="flex shrink-0 items-center gap-[8px]">
+          <Pill href={categoryHref(null)} active={category === null}>
+            Tout
           </Pill>
-        ))}
-      </div>
-
-      {showSizes && (
-        <div className="flex flex-wrap items-center gap-[8px]">
-          {SIZES.map((value) => (
+          {CATEGORIES.map((item) => (
             <Pill
-              key={value}
-              href={sizeHref(size === value ? null : value)}
-              active={size === value}
-              minWidth
+              key={item.slug}
+              href={categoryHref(category === item.slug ? null : item.slug)}
+              active={category === item.slug}
             >
-              {value}
+              {item.label}
             </Pill>
           ))}
         </div>
-      )}
 
-      <p
-        aria-live="polite"
-        className="font-label m-0 ml-auto text-[10px] font-bold tracking-[0.22em] text-black/42 uppercase"
-      >
-        {count === 1 ? "1 pièce" : `${count} pièces`}
-      </p>
+        {showSizes && (
+          <>
+            <span
+              aria-hidden
+              className="h-[22px] w-px shrink-0 bg-black/14 min-[760px]:hidden"
+            />
+            <div className="flex shrink-0 items-center gap-[8px]">
+              {SIZES.map((value) => (
+                <Pill
+                  key={value}
+                  href={sizeHref(size === value ? null : value)}
+                  active={size === value}
+                  minWidth
+                >
+                  {value}
+                </Pill>
+              ))}
+            </div>
+          </>
+        )}
+
+        <p
+          aria-live="polite"
+          className="font-label m-0 ml-auto hidden text-[10px] font-bold tracking-[0.22em] text-black/42 uppercase min-[760px]:block"
+        >
+          {count === 1 ? "1 pièce" : `${count} pièces`}
+        </p>
+      </div>
     </div>
   );
 }
@@ -91,7 +104,7 @@ function Pill({
       href={href}
       scroll={false}
       aria-pressed={active}
-      className={`font-label rounded-[999px] px-[12px] py-[9px] text-center text-[10px] font-bold tracking-[0.14em] backdrop-blur-[12px] transition-colors duration-[220ms] ${
+      className={`font-label inline-flex min-h-[44px] items-center justify-center rounded-[999px] px-[14px] text-center text-[10px] font-bold tracking-[0.14em] whitespace-nowrap backdrop-blur-[12px] transition-colors duration-[220ms] ${
         minWidth ? "min-w-[44px]" : ""
       } ${
         active
