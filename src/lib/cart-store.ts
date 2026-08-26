@@ -1,4 +1,5 @@
 import {
+  findColorway,
   findProduct,
   isSize,
   ONE_SIZE,
@@ -7,11 +8,14 @@ import {
 
 export type CartLine = {
   slug: string;
+  /** Deux coloris d'une même pièce sont deux lignes distinctes. */
+  colorway: string;
   size: SelectableSize;
   quantity: number;
 };
 
-const STORAGE_KEY = "fl390.cart.v1";
+/** v2 : la ligne porte désormais le coloris. */
+const STORAGE_KEY = "fl390.cart.v2";
 
 /**
  * Le panier vit dans un petit store externe plutôt que dans un état React.
@@ -37,12 +41,19 @@ function read(): CartLine[] {
 
     const restored = parsed.flatMap<CartLine>((entry) => {
       if (typeof entry !== "object" || entry === null) return [];
-      const { slug, size, quantity } = entry as Record<string, unknown>;
-      if (typeof slug !== "string" || !findProduct(slug)) return [];
+      const { slug, colorway, size, quantity } = entry as Record<
+        string,
+        unknown
+      >;
+      if (typeof slug !== "string") return [];
+      const product = findProduct(slug);
+      if (!product) return [];
+      if (typeof colorway !== "string") return [];
+      if (findColorway(product, colorway).id !== colorway) return [];
       if (typeof size !== "string") return [];
       if (!isSize(size) && size !== ONE_SIZE) return [];
       if (typeof quantity !== "number" || !Number.isFinite(quantity)) return [];
-      return [{ slug, size, quantity: clampQuantity(quantity) }];
+      return [{ slug, colorway, size, quantity: clampQuantity(quantity) }];
     });
 
     return restored.length > 0 ? restored : EMPTY;
@@ -90,13 +101,19 @@ function commit(next: CartLine[]) {
   for (const listener of listeners) listener();
 }
 
-export function addLine(slug: string, size: SelectableSize, quantity = 1) {
+export function addLine(
+  slug: string,
+  colorway: string,
+  size: SelectableSize,
+  quantity = 1,
+) {
   const index = lines.findIndex(
-    (line) => line.slug === slug && line.size === size,
+    (line) =>
+      line.slug === slug && line.colorway === colorway && line.size === size,
   );
   commit(
     index === -1
-      ? [...lines, { slug, size, quantity: clampQuantity(quantity) }]
+      ? [...lines, { slug, colorway, size, quantity: clampQuantity(quantity) }]
       : lines.map((line, i) =>
           i === index
             ? { ...line, quantity: clampQuantity(line.quantity + quantity) }
@@ -105,24 +122,35 @@ export function addLine(slug: string, size: SelectableSize, quantity = 1) {
   );
 }
 
+function isSame(line: CartLine, slug: string, colorway: string, size: SelectableSize) {
+  return (
+    line.slug === slug && line.colorway === colorway && line.size === size
+  );
+}
+
 export function setLineQuantity(
   slug: string,
+  colorway: string,
   size: SelectableSize,
   quantity: number,
 ) {
   commit(
     quantity <= 0
-      ? lines.filter((line) => !(line.slug === slug && line.size === size))
+      ? lines.filter((line) => !isSame(line, slug, colorway, size))
       : lines.map((line) =>
-          line.slug === slug && line.size === size
+          isSame(line, slug, colorway, size)
             ? { ...line, quantity: clampQuantity(quantity) }
             : line,
         ),
   );
 }
 
-export function removeLine(slug: string, size: SelectableSize) {
-  commit(lines.filter((line) => !(line.slug === slug && line.size === size)));
+export function removeLine(
+  slug: string,
+  colorway: string,
+  size: SelectableSize,
+) {
+  commit(lines.filter((line) => !isSame(line, slug, colorway, size)));
 }
 
 export function clearLines() {

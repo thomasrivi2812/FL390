@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 
 import { useCart } from "@/components/cart/cart-provider";
-import { formatPrice } from "@/lib/format";
 import { ProductVisual } from "@/components/product/product-visual";
+import { formatPrice } from "@/lib/format";
 import {
   defaultSize,
   hoverImage,
@@ -23,9 +24,15 @@ export function ProductCard({
   priority?: boolean;
 }) {
   const { add } = useCart();
+  /** Les pastilles changent l'aperçu de la carte ; le lien mène à la fiche. */
+  const [colorwayId, setColorwayId] = useState(product.colorways[0].id);
+  const colorway =
+    product.colorways.find((item) => item.id === colorwayId) ??
+    product.colorways[0];
+
   const href = `/shop/${product.slug}` as const;
-  const front = primaryImage(product);
-  const back = hoverImage(product);
+  const front = primaryImage(colorway);
+  const back = hoverImage(colorway);
 
   return (
     <article className="group flex flex-col">
@@ -55,7 +62,7 @@ export function ProductCard({
         <button
           type="button"
           aria-label={`Ajouter ${product.name} au panier`}
-          onClick={() => add(product.slug, defaultSize(product))}
+          onClick={() => add(product.slug, colorway.id, defaultSize(colorway))}
           className="group/add absolute top-[6px] right-[6px] flex h-[44px] w-[44px] items-center justify-center"
         >
           <span className="glass-control flex h-[32px] w-[32px] items-center justify-center rounded-control text-[19px] leading-none font-light text-ink transition-transform duration-300 ease-out group-hover/add:rotate-90">
@@ -76,16 +83,44 @@ export function ProductCard({
         </span>
       </div>
 
-      <div className="flex gap-[7px] px-[4px] pt-[10px]">
-        {product.dots.map((dot) => (
-          <span
-            key={dot}
-            aria-hidden
-            className="h-[11px] w-[11px] rounded-[999px] border border-black/30"
-            style={{ background: dot }}
-          />
-        ))}
-      </div>
+      {product.colorways.length > 1 ? (
+        <div
+          role="radiogroup"
+          aria-label={`Coloris de ${product.name}`}
+          className="flex gap-[7px] px-[4px] pt-[10px]"
+        >
+          {product.colorways.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              role="radio"
+              aria-checked={item.id === colorway.id}
+              aria-label={item.label}
+              onClick={() => setColorwayId(item.id)}
+              onPointerEnter={(event) => {
+                if (event.pointerType === "mouse") setColorwayId(item.id);
+              }}
+              className={`h-[11px] w-[11px] rounded-[999px] border transition-[outline-color] duration-[220ms] ${
+                item.id === colorway.id
+                  ? "border-black/30 outline outline-1 outline-offset-[3px] outline-ink"
+                  : "border-black/30 outline outline-1 outline-offset-[3px] outline-transparent"
+              }`}
+              style={{ background: item.hex }}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="flex gap-[7px] px-[4px] pt-[10px]">
+          {product.colorways.map((item) => (
+            <span
+              key={item.id}
+              aria-hidden
+              className="h-[11px] w-[11px] rounded-[999px] border border-black/30"
+              style={{ background: item.hex }}
+            />
+          ))}
+        </div>
+      )}
     </article>
   );
 }

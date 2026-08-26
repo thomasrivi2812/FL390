@@ -6,7 +6,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useCart } from "@/components/cart/cart-provider";
 import { formatPrice } from "@/lib/format";
 import { ProductVisual } from "@/components/product/product-visual";
-import { findProduct, ONE_SIZE, primaryImage } from "@/lib/products";
+import {
+  findColorway,
+  findProduct,
+  ONE_SIZE,
+  primaryImage,
+} from "@/lib/products";
 
 const LABEL =
   "font-label font-bold text-[9px] tracking-[0.28em] uppercase";
@@ -143,9 +148,11 @@ export function CartDrawer() {
             {lines.map((line) => {
               const product = findProduct(line.slug);
               if (!product) return null;
+              const colorway = findColorway(product, line.colorway);
+              const showColor = product.colorways.length > 1;
               return (
                 <li
-                  key={`${line.slug}-${line.size}`}
+                  key={`${line.slug}-${line.colorway}-${line.size}`}
                   className="flex gap-[14px] border-b border-black/12 py-[16px] first:pt-0"
                 >
                   <Link
@@ -154,7 +161,7 @@ export function CartDrawer() {
                     className="relative aspect-3/4 w-[84px] shrink-0 overflow-hidden rounded-card bg-stone"
                   >
                     <ProductVisual
-                      src={primaryImage(product)?.src ?? null}
+                      src={primaryImage(colorway)?.src ?? null}
                       alt={product.name}
                       sizes="84px"
                       className="absolute inset-0"
@@ -176,7 +183,14 @@ export function CartDrawer() {
                     <span
                       className={`${LABEL} mt-[8px] text-black/42`}
                     >
-                      {line.size === ONE_SIZE ? "Taille unique" : `Taille ${line.size}`}
+                      {[
+                        showColor ? colorway.label : null,
+                        line.size === ONE_SIZE
+                          ? "Taille unique"
+                          : `Taille ${line.size}`,
+                      ]
+                        .filter(Boolean)
+                        .join(" · ")}
                     </span>
                     <div className="mt-auto flex items-center justify-between gap-3 pt-[12px]">
                       <div className="flex items-center rounded-[999px] border border-black/18">
@@ -184,7 +198,12 @@ export function CartDrawer() {
                           type="button"
                           aria-label={`Retirer un exemplaire de ${product.name}, taille ${line.size}`}
                           onClick={() =>
-                            setQuantity(line.slug, line.size, line.quantity - 1)
+                            setQuantity(
+                              line.slug,
+                              line.colorway,
+                              line.size,
+                              line.quantity - 1,
+                            )
                           }
                           className="flex h-[34px] w-[38px] items-center justify-center text-[16px] leading-none"
                         >
@@ -197,7 +216,12 @@ export function CartDrawer() {
                           type="button"
                           aria-label={`Ajouter un exemplaire de ${product.name}, taille ${line.size}`}
                           onClick={() =>
-                            setQuantity(line.slug, line.size, line.quantity + 1)
+                            setQuantity(
+                              line.slug,
+                              line.colorway,
+                              line.size,
+                              line.quantity + 1,
+                            )
                           }
                           className="flex h-[34px] w-[38px] items-center justify-center text-[16px] leading-none"
                         >
@@ -206,7 +230,7 @@ export function CartDrawer() {
                       </div>
                       <button
                         type="button"
-                        onClick={() => remove(line.slug, line.size)}
+                        onClick={() => remove(line.slug, line.colorway, line.size)}
                         className={`${LABEL} text-black/42 transition-colors duration-300 hover:text-burgundy`}
                       >
                         Retirer

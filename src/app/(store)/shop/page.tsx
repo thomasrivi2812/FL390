@@ -8,6 +8,7 @@ import {
   getProducts,
   isCategorySlug,
   isSize,
+  offeredSizes,
   type CategorySlug,
   type Size,
 } from "@/lib/products";
@@ -37,11 +38,13 @@ export default async function ShopPage(props: PageProps<"/shop">) {
     ? products.filter((product) => product.category === category)
     : products;
   const filtered = size
-    ? inCategory.filter((product) => product.sizes.includes(size))
+    ? inCategory.filter((product) => offeredSizes(product).includes(size))
     : inCategory;
 
   /** Inutile de proposer des tailles à un rayon qui n'en décline aucune. */
-  const showSizes = inCategory.some((product) => product.sizes.length > 0);
+  const showSizes = inCategory.some(
+    (product) => offeredSizes(product).length > 0,
+  );
 
   return (
     <>

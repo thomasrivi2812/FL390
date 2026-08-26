@@ -48,15 +48,15 @@ export const CATEGORIES: Category[] = [
 /** Une prise de vue et sa légende, telle qu'affichée dans la galerie produit. */
 export type ProductImage = { src: string; caption: string };
 
-export type Product = {
-  slug: string;
-  name: string;
-  category: CategorySlug;
-  color: string;
-  price: number;
-  tag: string;
-  /** Pastilles de coloris — décoratives tant qu'il n'y a pas de variantes. */
-  dots: string[];
+/**
+ * Un coloris. C'est lui qui porte les visuels et les tailles : une même pièce
+ * peut être photographiée et déclinée différemment d'une couleur à l'autre.
+ */
+export type Colorway = {
+  id: string;
+  label: string;
+  /** Pastille du sélecteur. */
+  hex: string;
   /**
    * Galerie, dans l'ordre d'affichage. La première image porte la carte, la
    * seconde est révélée à son survol, toutes sont montrées sur la fiche.
@@ -64,6 +64,16 @@ export type Product = {
   images: ProductImage[];
   /** Vide pour une pièce en taille unique. */
   sizes: Size[];
+};
+
+export type Product = {
+  slug: string;
+  name: string;
+  category: CategorySlug;
+  price: number;
+  tag: string;
+  /** Le premier coloris est celui présenté par défaut. */
+  colorways: Colorway[];
   /** Grammage ou matière, affiché dans la ligne de méta. */
   weight: string;
   description: string;
@@ -83,75 +93,82 @@ const ALL_SIZES: Size[] = ["XS", "S", "M", "L", "XL"];
 
 const PRODUCTS: Product[] = [
   {
-    slug: "cleared-navy",
-    name: "Cleared For Takeoff — Navy",
+    slug: "cleared-tee",
+    name: "Cleared For Takeoff",
     category: "t-shirts",
-    color: "Navy",
     price: 85,
     tag: "New in",
-    dots: ["#1B2A4A", "#000000"],
-    images: [
-      { src: "/img/cleared-navy-worn.png", caption: "Porté" },
-      { src: "/img/cleared-navy-back.png", caption: "Dos — impression" },
-      { src: "/img/navy-front.png", caption: "Face" },
+    colorways: [
+      {
+        id: "navy",
+        label: "Navy",
+        hex: "#1B2A4A",
+        images: [
+          { src: "/img/cleared-navy-worn.png", caption: "Porté" },
+          { src: "/img/cleared-navy-back.png", caption: "Dos — impression" },
+          { src: "/img/navy-front.png", caption: "Face" },
+        ],
+        sizes: ALL_SIZES,
+      },
+      {
+        id: "noir",
+        label: "Noir",
+        hex: "#000000",
+        images: [
+          { src: "/img/cleared-black-worn.png", caption: "Porté — tarmac" },
+          { src: "/img/cleared.png", caption: "Dos — impression" },
+        ],
+        sizes: ALL_SIZES,
+      },
     ],
-    sizes: ALL_SIZES,
     weight: "270 g",
     description:
-      "La signature de la marque en bleu marine, impression dos blanche mate avec la mention born to fly. Coupe oversize, coton peigné 270 g.",
+      "Le message d'ouverture de la marque, imprimé au dos en grand, avec la mention born to fly. Coupe oversize, épaules tombantes, col côtelé.",
     specs: TEE_SPECS,
   },
   {
     slug: "discipline-tee",
     name: "Discipline",
     category: "t-shirts",
-    color: "Noir",
     price: 85,
     tag: "New in",
-    dots: ["#000000", "#FDFDFD"],
-    images: [
-      { src: "/img/discipline-worn.png", caption: "Porté" },
-      { src: "/img/discipline-back.png", caption: "Dos — impression" },
-      { src: "/img/discipline-front.png", caption: "Face" },
+    colorways: [
+      {
+        id: "noir",
+        label: "Noir",
+        hex: "#000000",
+        images: [
+          { src: "/img/discipline-worn.png", caption: "Porté" },
+          { src: "/img/discipline-back.png", caption: "Dos — impression" },
+          { src: "/img/discipline-front.png", caption: "Face" },
+        ],
+        sizes: ALL_SIZES,
+      },
     ],
-    sizes: ALL_SIZES,
     weight: "270 g",
     description:
       "Quatre lignes au dos, la devise de la maison en toutes lettres. Noir profond, impression blanche mate, coupe oversize et épaules tombantes.",
     specs: TEE_SPECS,
   },
   {
-    slug: "cleared-tee",
-    name: "Cleared For Takeoff",
-    category: "t-shirts",
-    color: "Noir",
-    price: 85,
-    tag: "New in",
-    dots: ["#000000", "#FDFDFD"],
-    images: [
-      { src: "/img/cleared-black-worn.png", caption: "Porté — tarmac" },
-      { src: "/img/cleared.png", caption: "Dos — impression" },
-    ],
-    sizes: ALL_SIZES,
-    weight: "270 g",
-    description:
-      "Le message d'ouverture de la marque, imprimé au dos en grand. Coupe oversize, épaules tombantes, col côtelé.",
-    specs: TEE_SPECS,
-  },
-  {
     slug: "cdg-lhr",
     name: "CDG — LHR",
     category: "t-shirts",
-    color: "Navy",
     price: 85,
     tag: "New in",
-    dots: ["#1B2A4A", "#FDFDFD"],
-    images: [
-      { src: "/img/cdg-lhr-worn.png", caption: "Porté" },
-      { src: "/img/cdg-lhr-back.png", caption: "Dos — impression" },
-      { src: "/img/navy-front.png", caption: "Face" },
+    colorways: [
+      {
+        id: "navy",
+        label: "Navy",
+        hex: "#1B2A4A",
+        images: [
+          { src: "/img/cdg-lhr-worn.png", caption: "Porté" },
+          { src: "/img/cdg-lhr-back.png", caption: "Dos — impression" },
+          { src: "/img/navy-front.png", caption: "Face" },
+        ],
+        sizes: ["S", "M", "L", "XL"],
+      },
     ],
-    sizes: ["S", "M", "L", "XL"],
     weight: "270 g",
     description:
       "Treize codes OACI répartis sur le dos, logo poitrine discret. Bleu marine, impression blanche mate, coupe oversize.",
@@ -161,16 +178,21 @@ const PRODUCTS: Product[] = [
     slug: "you-me-tee",
     name: "You. Me. Departure. No Return.",
     category: "t-shirts",
-    color: "Blanc",
     price: 85,
     tag: "New in",
-    dots: ["#FDFDFD", "#6D1111"],
-    images: [
-      { src: "/img/you-me-worn.png", caption: "Porté" },
-      { src: "/img/you-me-back.png", caption: "Dos — impression" },
-      { src: "/img/you-me-front.png", caption: "Face" },
+    colorways: [
+      {
+        id: "blanc",
+        label: "Blanc",
+        hex: "#FDFDFD",
+        images: [
+          { src: "/img/you-me-worn.png", caption: "Porté" },
+          { src: "/img/you-me-back.png", caption: "Dos — impression" },
+          { src: "/img/you-me-front.png", caption: "Face" },
+        ],
+        sizes: ALL_SIZES,
+      },
     ],
-    sizes: ALL_SIZES,
     weight: "270 g",
     description:
       "Quatre mots, un aller simple. Impression bordeaux sur blanc cassé, la seule pièce du drop où l'accent de la marque passe au premier plan.",
@@ -180,12 +202,17 @@ const PRODUCTS: Product[] = [
     slug: "departures-tee",
     name: "Departures",
     category: "t-shirts",
-    color: "Blanc",
     price: 85,
     tag: "New in",
-    dots: ["#FDFDFD", "#092242"],
-    images: [{ src: "/img/departures.png", caption: "Dos — impression" }],
-    sizes: ALL_SIZES,
+    colorways: [
+      {
+        id: "blanc",
+        label: "Blanc",
+        hex: "#FDFDFD",
+        images: [{ src: "/img/departures.png", caption: "Dos — impression" }],
+        sizes: ALL_SIZES,
+      },
+    ],
     weight: "270 g",
     description:
       "Dix-huit codes OACI empilés sur toute la hauteur du dos. Blanc cassé, impression noire mate, coupe oversize.",
@@ -195,15 +222,20 @@ const PRODUCTS: Product[] = [
     slug: "climb-tee",
     name: "Climb And Maintain",
     category: "t-shirts",
-    color: "Noir",
     price: 85,
     tag: "New in",
-    dots: ["#000000", "#27351B"],
-    images: [
-      { src: "/img/climb.png", caption: "Porté — tarmac" },
-      { src: "/img/climb-bw.png", caption: "Dos — impression" },
+    colorways: [
+      {
+        id: "noir",
+        label: "Noir",
+        hex: "#000000",
+        images: [
+          { src: "/img/climb.png", caption: "Porté — tarmac" },
+          { src: "/img/climb-bw.png", caption: "Dos — impression" },
+        ],
+        sizes: ["S", "M", "L", "XL"],
+      },
     ],
-    sizes: ["S", "M", "L", "XL"],
     weight: "270 g",
     description:
       "Monter, puis tenir le niveau. Impression dos trois lignes, coton peigné 270 g, coupe oversize.",
@@ -214,14 +246,19 @@ const PRODUCTS: Product[] = [
     slug: "discipline-hoodie",
     name: "Sweat à capuche Discipline",
     category: "sweats",
-    color: "Noir",
     price: 120,
     tag: "New in",
-    dots: ["#000000"],
-    images: [
-      { src: "/img/hoodie-discipline-worn.png", caption: "Porté — tarmac" },
+    colorways: [
+      {
+        id: "noir",
+        label: "Noir",
+        hex: "#000000",
+        images: [
+          { src: "/img/hoodie-discipline-worn.png", caption: "Porté — tarmac" },
+        ],
+        sizes: ALL_SIZES,
+      },
     ],
-    sizes: ALL_SIZES,
     weight: "400 g",
     description:
       "La devise de la maison portée sur molleton. Capuche doublée, poche kangourou, coupe droite un peu ample. Impression dos blanche mate.",
@@ -239,12 +276,17 @@ const PRODUCTS: Product[] = [
     slug: "remove-before-flight-tote",
     name: "Remove Before Flight — Tote",
     category: "accessoires",
-    color: "Bordeaux",
     price: 45,
     tag: "New in",
-    dots: ["#6D1111"],
-    images: [{ src: "/img/editorial-tote.png", caption: "Porté" }],
-    sizes: [],
+    colorways: [
+      {
+        id: "bordeaux",
+        label: "Bordeaux",
+        hex: "#6D1111",
+        images: [{ src: "/img/editorial-tote.png", caption: "Porté" }],
+        sizes: [],
+      },
+    ],
     weight: "Toile 340 g",
     description:
       "La formule qui ferme chaque check-list avant le roulage, imprimée en grand sur toile bordeaux. Anses longues, portées à l'épaule.",
@@ -296,28 +338,49 @@ export function countByCategory(
   return products.filter((product) => product.category === slug).length;
 }
 
-/** Une pièce en taille unique n'expose pas de sélecteur de taille. */
-export function isOneSize(product: Product): boolean {
-  return product.sizes.length === 0;
+/** Coloris présenté par défaut. */
+export function defaultColorway(product: Product): Colorway {
+  return product.colorways[0];
 }
 
-/** Visuel de la carte. */
-export function primaryImage(product: Product): ProductImage | undefined {
-  return product.images[0];
+/** Coloris demandé, ou celui par défaut si l'identifiant est inconnu. */
+export function findColorway(product: Product, id?: string | null): Colorway {
+  if (!id) return defaultColorway(product);
+  return (
+    product.colorways.find((colorway) => colorway.id === id) ??
+    defaultColorway(product)
+  );
+}
+
+/** Une pièce en taille unique n'expose pas de sélecteur de taille. */
+export function isOneSize(colorway: Colorway): boolean {
+  return colorway.sizes.length === 0;
+}
+
+/** Visuel de la carte, pour le coloris donné. */
+export function primaryImage(colorway: Colorway): ProductImage | undefined {
+  return colorway.images[0];
 }
 
 /** Visuel révélé au survol — le second, à défaut le premier. */
-export function hoverImage(product: Product): ProductImage | undefined {
-  return product.images[1] ?? product.images[0];
+export function hoverImage(colorway: Colorway): ProductImage | undefined {
+  return colorway.images[1] ?? colorway.images[0];
 }
 
-export function productMeta(product: Product): string {
+/** Toutes les tailles proposées par la pièce, tous coloris confondus. */
+export function offeredSizes(product: Product): Size[] {
+  return SIZES.filter((size) =>
+    product.colorways.some((colorway) => colorway.sizes.includes(size)),
+  );
+}
+
+export function productMeta(product: Product, colorway: Colorway): string {
   const category = findCategory(product.category);
-  return `${category.singular} · ${product.color} · ${product.weight}`;
+  return `${category.singular} · ${colorway.label} · ${product.weight}`;
 }
 
 /** Taille présélectionnée : L par défaut, sinon la première proposée. */
-export function defaultSize(product: Product): SelectableSize {
-  if (isOneSize(product)) return ONE_SIZE;
-  return product.sizes.includes("L") ? "L" : product.sizes[0];
+export function defaultSize(colorway: Colorway): SelectableSize {
+  if (isOneSize(colorway)) return ONE_SIZE;
+  return colorway.sizes.includes("L") ? "L" : colorway.sizes[0];
 }

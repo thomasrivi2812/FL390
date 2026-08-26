@@ -57,16 +57,28 @@ L'application est disponible sur http://localhost:3000.
 
 ## Catalogue et rayons
 
-Neuf pièces réparties en trois rayons — T-shirts, Sweats, Accessoires —
+Huit pièces réparties en trois rayons — T-shirts, Sweats, Accessoires —
 déclarées dans `src/lib/products.ts`, où chaque produit porte sa catégorie, ses
 caractéristiques, ses tailles et sa galerie. Une liste de tailles vide vaut
 taille unique : la fiche produit masque alors le sélecteur, le panier enregistre
 `TU`, et le rayon n'affiche pas de filtre par taille.
 
-Chaque produit expose une galerie ordonnée de `{ src, caption }` : la première
+### Coloris
+
+C'est le coloris, et non le produit, qui porte les visuels et les tailles : une
+même pièce peut être photographiée et déclinée différemment d'une couleur à
+l'autre. Le premier coloris déclaré est celui présenté par défaut.
+
+Chaque coloris expose une galerie ordonnée de `{ src, caption }` : la première
 image porte la carte, la seconde est révélée à son survol, toutes sont montrées
 sur la fiche. Une galerie vide rend un cadre « Visuel à venir » plutôt qu'une
 image cassée.
+
+Les pastilles de la carte changent l'aperçu sans quitter la grille ; le
+sélecteur de la fiche change les visuels, les tailles et la ligne ajoutée au
+panier. Deux coloris d'une même pièce forment deux lignes de panier distinctes —
+d'où la clé de stockage `fl390.cart.v2`, les lignes de l'ancien format étant
+ignorées faute de coloris.
 
 ### Nommage des visuels
 

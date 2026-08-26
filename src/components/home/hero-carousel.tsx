@@ -8,14 +8,14 @@ const SLIDE_DURATION_MS = 5000;
 /** Les visuels sont pilotés par index ; les titres restent des nœuds de texte. */
 const SLIDES = [
   {
-    src: "/img/hero-discipline.png",
-    alt: "T-shirt Discipline porté sur le tarmac, devant un jet",
-    position: "46% 42%",
-  },
-  {
     src: "/img/hero-cleared-navy.png",
     alt: "T-shirt Cleared For Takeoff bleu marine, contre un mur de béton",
     position: "76% 42%",
+  },
+  {
+    src: "/img/hero-discipline.png",
+    alt: "T-shirt Discipline porté sur le tarmac, devant un jet",
+    position: "46% 42%",
   },
   {
     src: "/img/hero-cdg-lhr.png",
@@ -73,15 +73,15 @@ export function HeroCarousel() {
             aria-hidden={index !== 0}
             className={`${HEADLINE} ${index === 0 ? "opacity-100" : "opacity-0"}`}
           >
-            Discipline
+            Cleared For
+            <br />
+            Takeoff
           </h1>
           <h1
             aria-hidden={index !== 1}
             className={`${HEADLINE} ${index === 1 ? "opacity-100" : "opacity-0"}`}
           >
-            Cleared For
-            <br />
-            Takeoff
+            Discipline
           </h1>
           <h1
             aria-hidden={index !== 2}
