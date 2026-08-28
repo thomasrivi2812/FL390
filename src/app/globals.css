@@ -12,7 +12,9 @@
   --color-burgundy: #6d1111;
   --color-navy: #092242;
   --color-navy-garment: #1b2a4a;
-  --color-olive: #27351b;
+  /* Vert de la marque. Choisi pour rester lisible en texte papier sur un grand
+     aplat (6.76:1) tout en s'éloignant de l'olive presque noir d'origine. */
+  --color-green: #4a6046;
 }
 
 /* Rayons. Six paliers, du plus petit contrôle au plus grand panneau.

@@ -4,6 +4,7 @@ import { FlightStrip } from "@/components/home/flight-strip";
 import { HeroCarousel } from "@/components/home/hero-carousel";
 import { LookbookTeaser } from "@/components/home/lookbook-teaser";
 import { Manifesto } from "@/components/home/manifesto";
+import { PressStrip } from "@/components/home/press-strip";
 import { TypographicMarquee } from "@/components/home/typographic-marquee";
 import { ProductGrid } from "@/components/product/product-grid";
 import { getProducts } from "@/lib/products";
@@ -19,6 +20,7 @@ export default async function HomePage() {
     <>
       <HeroCarousel />
       <TypographicMarquee />
+      <PressStrip />
 
       <section className="pb-[34px]">
         <div className="flex items-end justify-between gap-[20px] px-[22px] pt-[34px] pb-[18px]">

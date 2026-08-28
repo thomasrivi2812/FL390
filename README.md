@@ -143,7 +143,11 @@ volontairement écrit en valeurs explicites pour rester traçable jusqu'au
 document de référence.
 
 **Couleurs** — `ink #000000`, `paper #FDFDFD`, `stone #EFEFEC`,
-`burgundy #6D1111`, `navy #092242`, `navy-garment #1B2A4A`, `olive #27351B`.
+`burgundy #6D1111`, `navy #092242`, `navy-garment #1B2A4A`, `green #4A6046`.
+
+Le vert a remplacé l'olive `#27351B` d'origine, presque noir sur un grand aplat.
+`#4A6046` est nettement plus clair tout en gardant le texte papier à 6.76:1 —
+le seuil AA pour du petit texte étant de 4.5.
 
 **Polices** — `font-display` (Krona One, display uniquement), `font-body`
 (Work Sans, copy), `font-label` (Titillium Web, micro-labels en capitales).
@@ -237,6 +241,18 @@ Le handoff ne spécifie que le rendu large. Les décisions prises en dessous :
   débordement horizontal de 320 à 1440 px.
 - Bouton « + » des cartes : cible tactile de 44 px autour du carré visuel de
   32 px, conformément à la remarque du handoff.
+
+## Revue de presse
+
+`src/lib/press.ts` porte la liste des parutions, vide par défaut : tant qu'elle
+l'est, la bande « Vu dans » ne s'affiche pas — mieux vaut aucune mention qu'une
+mention inventée. Chaque entrée se cite de deux façons, un logo déposé dans
+`public/img/presse/` avec ses dimensions réelles, ou simplement un nom rendu en
+typographie de la maison en attendant de recevoir le fichier. `href` est
+facultatif et pointe vers l'article.
+
+Les logos sont désaturés au repos et reprennent leurs couleurs au survol : sans
+ce traitement, une juxtaposition de chartes tierces parasite la page.
 
 ## Panier
 
